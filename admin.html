@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración | JANIACRIL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7f3;color:#183021}
+header{background:#176f38;color:white;padding:22px;text-align:center}
+main{max-width:850px;margin:30px auto;padding:20px}
+.panel{background:white;padding:25px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 15px #0001}
+h2{margin-top:0}
+input,textarea,select{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #ccd8ce;border-radius:7px;font:inherit}
+button{border:0;border-radius:7px;padding:12px 17px;background:#16833d;color:white;font-weight:bold;cursor:pointer;margin:4px}
+button.sec{background:#66736a}
+button.danger{background:#bd3434}
+.producto{border:1px solid #e1e9e2;border-radius:10px;padding:14px;margin:12px 0;display:flex;gap:15px;align-items:center}
+.producto img{width:90px;height:85px;object-fit:cover;border-radius:8px}
+.producto-info{flex:1}
+small{color:#66736a}
+#panelAdmin,#mensaje{display:none}
+#estado{color:#176f38;font-weight:bold}
+</style>
+</head>
+<body>
+<header>
+<h1>JANIACRIL</h1>
+<p>Panel de administración</p>
+</header>
+
+<main>
+<section class="panel" id="login">
+<h2>Iniciar sesión</h2>
+<p>Ingresa con tu cuenta de administrador.</p>
+<input id="email" type="email" placeholder="Correo electrónico">
+<input id="password" type="password" placeholder="Contraseña">
+<button id="entrar">Ingresar</button>
+<p id="errorLogin" style="color:#bd3434"></p>
+</section>
+
+<section id="panelAdmin">
+<div class="panel">
+<h2>Administrar productos</h2>
+<p id="estado">Sesión iniciada</p>
+<button class="sec" id="salir">Cerrar sesión</button>
+</div>
+
+<div class="panel">
+<h2 id="tituloFormulario">Agregar producto</h2>
+<form id="formProducto">
+<label>Nombre del producto</label>
+<input id="nombre" required placeholder="Ej: Exhibidor de tortas">
+
+<label>Categoría</label>
+<select id="categoria">
+<option>Repostería</option>
+<option>Señalética</option>
+<option>Organización</option>
+<option>Otros</option>
+</select>
+
+<label>Descripción</label>
+<textarea id="descripcion" rows="3" placeholder="Describe el producto"></textarea>
+
+<label>Precio (puedes dejarlo en 0 si es a consultar)</label>
+<input id="precio" type="number" min="0" value="0">
+
+<label>Fotografía del producto</label>
+<input id="foto" type="file" accept="image/jpeg,image/png,image/webp">
+<small>Formatos JPG, PNG o WEBP. Máximo 5 MB.</small>
+
+<p id="estadoFoto"></p>
+<button type="submit" id="guardar">Guardar producto</button>
+<button type="button" class="sec" id="cancelar" style="display:none">Cancelar edición</button>
+</form>
+<p id="mensaje"></p>
+</div>
+
+<div class="panel">
+<h2>Productos publicados</h2>
+<div id="listaProductos">Cargando productos...</div>
+</div>
+</section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword,
+  onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, updateDoc,
+  deleteDoc, doc, onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBGDx598ENGfbUADWOXsdmXeS42n1Lf-24",
+  authDomain: "janiacril-50a9b.firebaseapp.com",
+  projectId: "janiacril-50a9b",
+  storageBucket: "janiacril-50a9b.firebasestorage.app",
+  messagingSenderId: "213743116298",
+  appId: "1:213743116298:web:b3d2055fc470edb55c3ff3",
+  measurementId: "G-F5VLPGVRQF"
+};
+
+const CLOUD_NAME = "llxnor52";
+const UPLOAD_PRESET = "janiacril_productos";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+let editando = null;
+let imagenActual = "";
+let detenerLista = null;
+
+function mostrarMensaje(texto, error = false) {
+  $("mensaje").style.display = "block";
+  $("mensaje").style.color = error ? "#bd3434" : "#176f38";
+  $("mensaje").textContent = texto;
+}
+
+function escapar(texto) {
+  return String(texto ?? "").replace(/[&<>"']/g, letra => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[letra]);
+}
+
+$("entrar").addEventListener("click", async () => {
+  $("errorLogin").textContent = "";
+  try {
+    await signInWithEmailAndPassword(
+      auth, $("email").value.trim(), $("password").value
+    );
+  } catch (error) {
+    $("errorLogin").textContent =
+      "No se pudo iniciar sesión. Revisa tu correo y contraseña.";
+  }
+});
+
+$("salir").addEventListener("click", () => signOut(auth));
+
+onAuthStateChanged(auth, user => {
+  $("login").style.display = user ? "none" : "block";
+  $("panelAdmin").style.display = user ? "block" : "none";
+
+  if (detenerLista) {
+    detenerLista();
+    detenerLista = null;
+  }
+
+  if (user) {
+    $("estado").textContent = "Sesión iniciada: " + user.email;
+    cargarProductos();
+  }
+});
+
+function cargarProductos() {
+  detenerLista = onSnapshot(
+    collection(db, "productos"),
+    snapshot => {
+      const lista = $("listaProductos");
+
+      if (snapshot.empty) {
+        lista.innerHTML = "Todavía no hay productos publicados.";
+        return;
+      }
+
+      lista.innerHTML = snapshot.docs.map(d => {
+        const p = d.data();
+        return `
+          <article class="producto">
+            ${p.imagen ? `<img src="${escapar(p.imagen)}" alt="">` : ""}
+            <div class="producto-info">
+              <strong>${escapar(p.nombre)}</strong><br>
+              <small>${escapar(p.categoria)}</small><br>
+              <small>${escapar(p.descripcion)}</small><br>
+              <small>Precio: ${Number(p.precio) > 0 ? "$" + Number(p.precio).toLocaleString("es-CL") : "A consultar"}</small>
+              <br>
+              <button data-editar="${d.id}">Editar</button>
+              <button class="danger" data-eliminar="${d.id}">Eliminar</button>
+            </div>
+          </article>`;
+      }).join("");
+
+      lista.querySelectorAll("[data-editar]").forEach(b => {
+        b.addEventListener("click", () => editarProducto(
+          snapshot.docs.find(d => d.id === b.dataset.editar)
+        ));
+      });
+
+      lista.querySelectorAll("[data-eliminar]").forEach(b => {
+        b.addEventListener("click", () => eliminarProducto(b.dataset.eliminar));
+      });
+    },
+    error => mostrarMensaje("Error al cargar productos: " + error.message, true)
+  );
+}
+
+async function subirImagen(archivo) {
+  if (!archivo) return imagenActual;
+
+  if (!["image/jpeg", "image/png", "image/webp"].includes(archivo.type)) {
+    throw new Error("Elige una imagen JPG, PNG o WEBP.");
+  }
+
+  if (archivo.size > 5 * 1024 * 1024) {
+    throw new Error("La imagen debe pesar menos de 5 MB.");
+  }
+
+  $("estadoFoto").textContent = "Subiendo fotografía...";
+
+  const datos = new FormData();
+  datos.append("file", archivo);
+  datos.append("upload_preset", UPLOAD_PRESET);
+  datos.append("folder", "janiacril/productos");
+
+  const respuesta = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    { method: "POST", body: datos }
+  );
+
+  const resultado = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(resultado.error?.message || "No se pudo subir la imagen.");
+  }
+
+  $("estadoFoto").textContent = "Fotografía subida correctamente.";
+  return resultado.secure_url;
+}
+
+$("formProducto").addEventListener("submit", async evento => {
+  evento.preventDefault();
+
+  const boton = $("guardar");
+  boton.disabled = true;
+  boton.textContent = "Guardando...";
+
+  try {
+    const archivo = $("foto").files[0];
+    const imagen = await subirImagen(archivo);
+
+    const producto = {
+      nombre: $("nombre").value.trim(),
+      categoria: $("categoria").value,
+      descripcion: $("descripcion").value.trim(),
+      precio: Number($("precio").value) || 0,
+      imagen,
+      actualizado: serverTimestamp()
+    };
+
+    if (!producto.nombre) throw new Error("Escribe el nombre del producto.");
+
+    if (editando) {
+      await updateDoc(doc(db, "productos", editando), producto);
+      mostrarMensaje("¡Producto actualizado correctamente!");
+    } else {
+      await addDoc(collection(db, "productos"), {
+        ...producto,
+        creado: serverTimestamp()
+      });
+      mostrarMensaje("¡Producto agregado correctamente!");
+    }
+
+    limpiarFormulario();
+  } catch (error) {
+    mostrarMensaje(error.message, true);
+  } finally {
+    boton.disabled = false;
+    boton.textContent = "Guardar producto";
+  }
+});
+
+function editarProducto(documento) {
+  const p = documento.data();
+  editando = documento.id;
+  imagenActual = p.imagen || "";
+
+  $("nombre").value = p.nombre || "";
+  $("categoria").value = p.categoria || "Otros";
+  $("descripcion").value = p.descripcion || "";
+  $("precio").value = p.precio || 0;
+  $("foto").value = "";
+  $("tituloFormulario").textContent = "Editar producto";
+  $("guardar").textContent = "Guardar cambios";
+  $("cancelar").style.display = "inline-block";
+  $("estadoFoto").textContent = imagenActual
+    ? "Hay una fotografía guardada. Puedes conservarla o subir otra."
+    : "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function eliminarProducto(id) {
+  if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
+
+  try {
+    await deleteDoc(doc(db, "productos", id));
+    mostrarMensaje("Producto eliminado.");
+    if (editando === id) limpiarFormulario();
+  } catch (error) {
+    mostrarMensaje("No se pudo eliminar: " + error.message, true);
+  }
+}
+
+function limpiarFormulario() {
+  $("formProducto").reset();
+  $("precio").value = 0;
+  $("tituloFormulario").textContent = "Agregar producto";
+  $("guardar").textContent = "Guardar producto";
+  $("cancelar").style.display = "none";
+  $("estadoFoto").textContent = "";
+  editando = null;
+  imagenActual = "";
+}
+
+$("cancelar").addEventListener("click", limpiarFormulario);
+</script>
+</body>
+</html>
