@@ -2,350 +2,411 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administración | JANIACRIL</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 25px;
-      font-family: Arial, sans-serif;
-      background: #f2f7f3;
-      color: #24352b;
-    }
-    .contenedor {
-      max-width: 750px;
-      margin: 25px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 18px #00000012;
-    }
-    h1, h2 { color: #246b45; }
-    input, textarea, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-    input, textarea {
-      border: 1px solid #ccd8ce;
-    }
-    button {
-      border: 0;
-      background: #287449;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { background: #1d5937; }
-    .secundario { background: #64766a; }
-    .eliminar { background: #b83b3b; }
-    .producto {
-      border: 1px solid #dce7df;
-      padding: 14px;
-      border-radius: 10px;
-      margin: 12px 0;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-    .producto img {
-      width: 85px;
-      height: 85px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .producto-info { flex: 1; }
-    .producto button { margin-top: 5px; }
-    #panel { display: none; }
-    #mensaje { font-weight: bold; }
-    .oculto { display: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administración JANIACRIL</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;font-family:Arial,sans-serif;background:#f2f7f3;color:#26382d}
+main{max-width:850px;margin:20px auto;background:white;padding:24px;border-radius:15px}
+h1,h2{color:#287449}
+input,textarea,select,button{width:100%;padding:12px;margin:7px 0;border-radius:8px;font-size:15px}
+input,textarea,select{border:1px solid #ccd8ce;background:white}
+button{border:0;background:#287449;color:white;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5}
+.sec{background:#68796e}
+.del{background:#b83b3b}
+.card{border:1px solid #dce7df;border-radius:10px;padding:13px;margin:10px 0}
+.card img{width:85px;height:85px;object-fit:cover;border-radius:8px}
+.item{display:flex;align-items:center;gap:12px}
+.item-info{flex:1;min-width:0}
+.small{font-size:13px;color:#64766a}
+.hidden{display:none}
+hr{border:0;border-top:1px solid #e1e9e3;margin:25px 0}
+</style>
 </head>
 <body>
+<main>
+<h1>JANIACRIL</h1>
+<p>Panel de administración</p>
 
-  <div class="contenedor">
-    <h1>JANIACRIL</h1>
-    <p>Panel de administración de productos</p>
+<section id="login">
+<h2>Iniciar sesión</h2>
+<input id="correo" type="email" placeholder="Correo electrónico">
+<input id="clave" type="password" placeholder="Contraseña">
+<button id="entrar">Ingresar</button>
+<p id="mensaje"></p>
+</section>
 
-    <section id="login">
-      <h2>Iniciar sesión</h2>
-      <input id="correo" type="email" placeholder="Correo electrónico">
-      <input id="clave" type="password" placeholder="Contraseña">
-      <button id="entrar">Ingresar</button>
-      <p id="mensaje"></p>
-    </section>
+<section id="panel" class="hidden">
+<button id="salir" class="sec">Cerrar sesión</button>
 
-    <section id="panel">
-      <button id="salir" class="secundario">Cerrar sesión</button>
+<h2>1. Crear categoría</h2>
+<input id="nuevaCategoria" placeholder="Ej: Pastelería y heladería">
+<button id="crearCategoria">Crear categoría</button>
+<div id="listaCategorias"></div>
 
-      <h2 id="tituloFormulario">Agregar producto</h2>
-      <input id="nombre" placeholder="Nombre del producto">
-      <input id="categoria" placeholder="Categoría">
-      <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
+<hr>
 
-      <label for="foto"><strong>Foto del producto:</strong></label>
-      <input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
-      <p id="estadoFoto"></p>
-      <img id="vistaPrevia" style="display:none;max-width:150px;border-radius:10px;">
+<h2>2. Crear subcategoría</h2>
+<label>Selecciona la categoría principal:</label>
+<select id="categoriaSub">
+<option value="">Selecciona una categoría</option>
+</select>
+<input id="nuevaSubcategoria" placeholder="Ej: Porta tortas">
+<button id="crearSubcategoria">Crear subcategoría</button>
+<div id="listaSubcategorias"></div>
 
-      <button id="guardar">Guardar producto</button>
-      <button id="cancelar" class="secundario oculto">Cancelar edición</button>
-      <p id="mensajePanel"></p>
+<hr>
 
-      <hr>
-      <h2>Mis productos</h2>
-      <div id="lista"></div>
-    </section>
-  </div>
+<h2>3. Agregar producto</h2>
+<input id="nombre" placeholder="Nombre del producto">
+<textarea id="descripcion" placeholder="Descripción del producto"></textarea>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      updateDoc,
-      deleteDoc,
-      doc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<label>Categoría:</label>
+<select id="categoriaProducto">
+<option value="">Selecciona una categoría</option>
+</select>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBGDx598ENGfbUADWOXsdmXe42n1Lf-24",
-      authDomain: "janiacril-50a9b.firebaseapp.com",
-      projectId: "janiacril-50a9b",
-      storageBucket: "janiacril-50a9b.firebasestorage.app",
-      messagingSenderId: "213743116298",
-      appId: "1:213743116298:web:b3d2055fc470edb55c3ff3",
-      measurementId: "G-F5VLPGVRQF"
-    };
+<label>Subcategoría:</label>
+<select id="subcategoriaProducto">
+<option value="">Primero selecciona una categoría</option>
+</select>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+<label>Foto del producto:</label>
+<input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
+<p id="estadoFoto" class="small"></p>
+<img id="preview" class="hidden" style="max-width:150px;border-radius:8px">
 
-    const ADMIN_UID = "4vCpe7JpzdM6GqP7V1hpcBK530d2";
-    const CLOUD_NAME = "llxnor52";
-    const UPLOAD_PRESET = "janiacril_productos";
+<button id="guardarProducto">Guardar producto</button>
+<button id="cancelarEdicion" class="sec hidden">Cancelar edición</button>
+<p id="mensajeProducto"></p>
 
-    let imagenActual = "";
-    let productoEditando = null;
+<hr>
 
-    const $ = id => document.getElementById(id);
+<h2>4. Productos publicados</h2>
+<div id="listaProductos"></div>
+</section>
+</main>
 
-    $("entrar").addEventListener("click", async () => {
-      $("mensaje").textContent = "Ingresando...";
-      try {
-        await signInWithEmailAndPassword(
-          auth,
-          $("correo").value.trim(),
-          $("clave").value
-        );
-      } catch (error) {
-        $("mensaje").textContent = "No se pudo ingresar. Revisa tu correo y contraseña.";
-      }
-    });
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+getFirestore,collection,addDoc,getDocs,updateDoc,deleteDoc,doc,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    $("salir").addEventListener("click", () => signOut(auth));
+const firebaseConfig={
+apiKey:"AIzaSyBGDx598ENGfbUADWOXsdmXe42n1Lf-24",
+authDomain:"janiacril-50a9b.firebaseapp.com",
+projectId:"janiacril-50a9b",
+storageBucket:"janiacril-50a9b.firebasestorage.app",
+messagingSenderId:"213743116298",
+appId:"1:213743116298:web:b3d2055fc470edb55c3ff3",
+measurementId:"G-F5VLPGVRQF"
+};
 
-    onAuthStateChanged(auth, user => {
-      if (user && user.uid === ADMIN_UID) {
-        $("login").style.display = "none";
-        $("panel").style.display = "block";
-        $("mensaje").textContent = "";
-        cargarProductos();
-      } else {
-        $("panel").style.display = "none";
-        $("login").style.display = "block";
-        if (user) {
-          $("mensaje").textContent = "Esta cuenta no tiene permiso de administración.";
-          signOut(auth);
-        }
-      }
-    });
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const ADMIN_UID="4vCpe7JpzdM6GqP7V1hpcBK530d2";
+const CLOUD_NAME="llxnor52";
+const UPLOAD_PRESET="janiacril_productos";
 
-    $("foto").addEventListener("change", () => {
-      const archivo = $("foto").files[0];
-      if (!archivo) return;
+const $=id=>document.getElementById(id);
+let categorias=[];
+let productos=[];
+let imagenActual="";
+let editandoProducto=null;
 
-      if (archivo.size > 5 * 1024 * 1024) {
-        $("estadoFoto").textContent = "La foto debe pesar menos de 5 MB.";
-        $("foto").value = "";
-        return;
-      }
+$("entrar").onclick=async()=>{
+$("mensaje").textContent="Ingresando...";
+try{
+await signInWithEmailAndPassword(auth,$("correo").value.trim(),$("clave").value);
+}catch(e){$("mensaje").textContent="No se pudo ingresar. Revisa tu correo y contraseña.";}
+};
 
-      $("vistaPrevia").src = URL.createObjectURL(archivo);
-      $("vistaPrevia").style.display = "block";
-      $("estadoFoto").textContent = "Foto seleccionada.";
-    });
+$("salir").onclick=()=>signOut(auth);
 
-    async function subirFoto(archivo) {
-      const datos = new FormData();
-      datos.append("file", archivo);
-      datos.append("upload_preset", UPLOAD_PRESET);
+onAuthStateChanged(auth,async user=>{
+if(user && user.uid===ADMIN_UID){
+$("login").classList.add("hidden");
+$("panel").classList.remove("hidden");
+await actualizarTodo();
+}else{
+$("panel").classList.add("hidden");
+$("login").classList.remove("hidden");
+if(user){
+$("mensaje").textContent="Esta cuenta no tiene permiso de administración.";
+await signOut(auth);
+}
+}
+});
 
-      const respuesta = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-        { method: "POST", body: datos }
-      );
+async function actualizarTodo(){
+await cargarCategorias();
+await cargarProductos();
+}
 
-      const resultado = await respuesta.json();
+async function cargarCategorias(){
+const snap=await getDocs(collection(db,"categorias"));
+categorias=snap.docs.map(d=>({id:d.id,...d.data()}));
+mostrarCategorias();
+}
 
-      if (!respuesta.ok) {
-        throw new Error(resultado.error?.message || "No se pudo subir la foto.");
-      }
+function mostrarCategorias(){
+const principales=categorias.filter(c=>!c.parentId);
+const subs=categorias.filter(c=>c.parentId);
 
-      return resultado.secure_url;
-    }
+$("listaCategorias").innerHTML="";
+$("categoriaSub").innerHTML='<option value="">Selecciona una categoría</option>';
+$("categoriaProducto").innerHTML='<option value="">Selecciona una categoría</option>';
 
-    $("guardar").addEventListener("click", async () => {
-      const nombre = $("nombre").value.trim();
-      const categoria = $("categoria").value.trim();
-      const descripcion = $("descripcion").value.trim();
-      const archivo = $("foto").files[0];
+principales.forEach(c=>{
+const op1=new Option(c.nombre,c.id);
+const op2=new Option(c.nombre,c.id);
+$("categoriaSub").add(op1);
+$("categoriaProducto").add(op2);
 
-      if (!nombre) {
-        $("mensajePanel").textContent = "Escribe el nombre del producto.";
-        return;
-      }
+const div=document.createElement("div");
+div.className="card";
+const titulo=document.createElement("strong");
+titulo.textContent=c.nombre;
+const editar=document.createElement("button");
+editar.className="sec";
+editar.textContent="Cambiar nombre";
+editar.onclick=()=>editarCategoria(c.id,c.nombre);
+const eliminar=document.createElement("button");
+eliminar.className="del";
+eliminar.textContent="Eliminar categoría";
+eliminar.onclick=()=>eliminarCategoria(c.id,c.nombre);
+div.append(titulo,editar,eliminar);
+$("listaCategorias").append(div);
+});
 
-      $("guardar").disabled = true;
-      $("mensajePanel").textContent = "Guardando producto...";
+$("listaSubcategorias").innerHTML="";
+subs.forEach(s=>{
+const padre=principales.find(c=>c.id===s.parentId);
+const div=document.createElement("div");
+div.className="card";
+const titulo=document.createElement("strong");
+titulo.textContent=(padre?padre.nombre:"Categoría") + " → " + s.nombre;
+const editar=document.createElement("button");
+editar.className="sec";
+editar.textContent="Cambiar nombre";
+editar.onclick=()=>editarCategoria(s.id,s.nombre);
+const eliminar=document.createElement("button");
+eliminar.className="del";
+eliminar.textContent="Eliminar subcategoría";
+eliminar.onclick=()=>eliminarCategoria(s.id,s.nombre);
+div.append(titulo,editar,eliminar);
+$("listaSubcategorias").append(div);
+});
 
-      try {
-        if (archivo) {
-          imagenActual = await subirFoto(archivo);
-        }
+actualizarSubproductos();
+}
 
-        if (!imagenActual) {
-          $("mensajePanel").textContent = "Selecciona una foto para el producto.";
-          return;
-        }
+$("categoriaProducto").onchange=actualizarSubproductos;
 
-        const datos = {
-          nombre,
-          categoria,
-          descripcion,
-          imagen: imagenActual,
-          activo: true
-        };
+function actualizarSubproductos(){
+const id=$("categoriaProducto").value;
+$("subcategoriaProducto").innerHTML='<option value="">Sin subcategoría</option>';
+categorias.filter(c=>c.parentId===id).forEach(c=>{
+$("subcategoriaProducto").add(new Option(c.nombre,c.id));
+});
+}
 
-        if (productoEditando) {
-          await updateDoc(doc(db, "productos", productoEditando), datos);
-          $("mensajePanel").textContent = "¡Producto actualizado!";
-        } else {
-          datos.creado = serverTimestamp();
-          await addDoc(collection(db, "productos"), datos);
-          $("mensajePanel").textContent = "¡Producto agregado!";
-        }
+$("crearCategoria").onclick=async()=>{
+const nombre=$("nuevaCategoria").value.trim();
+if(!nombre)return alert("Escribe el nombre de la categoría.");
+try{
+await addDoc(collection(db,"categorias"),{nombre,parentId:null,creado:serverTimestamp()});
+$("nuevaCategoria").value="";
+await cargarCategorias();
+}catch(e){alert("Error al crear: "+e.message);}
+};
 
-        limpiarFormulario();
-        await cargarProductos();
+$("crearSubcategoria").onclick=async()=>{
+const parentId=$("categoriaSub").value;
+const nombre=$("nuevaSubcategoria").value.trim();
+if(!parentId)return alert("Selecciona una categoría principal.");
+if(!nombre)return alert("Escribe el nombre de la subcategoría.");
+try{
+await addDoc(collection(db,"categorias"),{nombre,parentId,creado:serverTimestamp()});
+$("nuevaSubcategoria").value="";
+await cargarCategorias();
+}catch(e){alert("Error al crear: "+e.message);}
+};
 
-      } catch (error) {
-        $("mensajePanel").textContent = "Error: " + error.message;
-      } finally {
-        $("guardar").disabled = false;
-      }
-    });
+async function editarCategoria(id,nombreActual){
+const nuevo=prompt("Escribe el nuevo nombre:",nombreActual);
+if(!nuevo || !nuevo.trim())return;
+try{
+await updateDoc(doc(db,"categorias",id),{nombre:nuevo.trim()});
+await cargarCategorias();
+}catch(e){alert("Error al cambiar: "+e.message);}
+}
 
-    function limpiarFormulario() {
-      $("nombre").value = "";
-      $("categoria").value = "";
-      $("descripcion").value = "";
-      $("foto").value = "";
-      $("vistaPrevia").style.display = "none";
-      $("estadoFoto").textContent = "";
-      imagenActual = "";
-      productoEditando = null;
-      $("tituloFormulario").textContent = "Agregar producto";
-      $("guardar").textContent = "Guardar producto";
-      $("cancelar").classList.add("oculto");
-    }
+async function eliminarCategoria(id,nombre){
+if(!confirm("¿Eliminar "+nombre+"? Los productos relacionados no se borrarán, pero podrían quedar sin categoría."))return;
+try{
+const tieneHijas=categorias.some(c=>c.parentId===id);
+if(tieneHijas){
+alert("Primero elimina las subcategorías de esta categoría.");
+return;
+}
+await deleteDoc(doc(db,"categorias",id));
+await cargarCategorias();
+}catch(e){alert("Error al eliminar: "+e.message);}
+}
 
-    $("cancelar").addEventListener("click", limpiarFormulario);
+$("foto").onchange=()=>{
+const archivo=$("foto").files[0];
+if(!archivo)return;
+if(archivo.size>5*1024*1024){
+alert("La imagen debe pesar menos de 5 MB.");
+$("foto").value="";
+return;
+}
+$("preview").src=URL.createObjectURL(archivo);
+$("preview").classList.remove("hidden");
+$("estadoFoto").textContent="Imagen seleccionada.";
+};
 
-    async function cargarProductos() {
-      $("lista").innerHTML = "Cargando productos...";
+async function subirFoto(archivo){
+const datos=new FormData();
+datos.append("file",archivo);
+datos.append("upload_preset",UPLOAD_PRESET);
+const respuesta=await fetch(
+`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+{method:"POST",body:datos}
+);
+const resultado=await respuesta.json();
+if(!respuesta.ok)throw new Error(resultado.error?.message||"Error al subir imagen.");
+return resultado.secure_url;
+}
 
-      try {
-        const consulta = await getDocs(collection(db, "productos"));
-        $("lista").innerHTML = "";
+$("guardarProducto").onclick=async()=>{
+const nombre=$("nombre").value.trim();
+const descripcion=$("descripcion").value.trim();
+const categoriaId=$("categoriaProducto").value;
+const subcategoriaId=$("subcategoriaProducto").value;
+const categoria=categorias.find(c=>c.id===categoriaId);
+const subcategoria=categorias.find(c=>c.id===subcategoriaId);
+const archivo=$("foto").files[0];
 
-        if (consulta.empty) {
-          $("lista").textContent = "Todavía no has agregado productos.";
-          return;
-        }
+if(!nombre)return alert("Escribe el nombre del producto.");
+if(!categoria)return alert("Selecciona una categoría.");
 
-        consulta.forEach(documento => {
-          const p = documento.data();
-          const id = documento.id;
+$("guardarProducto").disabled=true;
+$("mensajeProducto").textContent="Guardando...";
 
-          const tarjeta = document.createElement("div");
-          tarjeta.className = "producto";
+try{
+if(archivo)imagenActual=await subirFoto(archivo);
+if(!imagenActual)throw new Error("Selecciona una foto del producto.");
 
-          const imagen = document.createElement("img");
-          imagen.src = p.imagen || "";
-          imagen.alt = p.nombre || "Producto";
+const datos={
+nombre,descripcion,
+categoriaId,
+categoria:categoria.nombre,
+subcategoriaId:subcategoriaId||"",
+subcategoria:subcategoria?subcategoria.nombre:"",
+imagen:imagenActual,
+activo:true
+};
 
-          const info = document.createElement("div");
-          info.className = "producto-info";
+if(editandoProducto){
+await updateDoc(doc(db,"productos",editandoProducto),datos);
+}else{
+datos.creado=serverTimestamp();
+await addDoc(collection(db,"productos"),datos);
+}
 
-          const nombre = document.createElement("strong");
-          nombre.textContent = p.nombre || "Sin nombre";
+$("mensajeProducto").textContent="¡Producto guardado!";
+limpiarProducto();
+await cargarProductos();
+}catch(e){
+$("mensajeProducto").textContent="Error: "+e.message;
+}finally{
+$("guardarProducto").disabled=false;
+}
+};
 
-          const detalle = document.createElement("p");
-          detalle.textContent = p.categoria || "";
+function limpiarProducto(){
+$("nombre").value="";
+$("descripcion").value="";
+$("categoriaProducto").value="";
+actualizarSubproductos();
+$("foto").value="";
+$("preview").classList.add("hidden");
+$("estadoFoto").textContent="";
+imagenActual="";
+editandoProducto=null;
+$("guardarProducto").textContent="Guardar producto";
+$("cancelarEdicion").classList.add("hidden");
+}
 
-          const editar = document.createElement("button");
-          editar.textContent = "Editar";
-          editar.addEventListener("click", () => {
-            productoEditando = id;
-            $("nombre").value = p.nombre || "";
-            $("categoria").value = p.categoria || "";
-            $("descripcion").value = p.descripcion || "";
-            imagenActual = p.imagen || "";
-            $("tituloFormulario").textContent = "Editar producto";
-            $("guardar").textContent = "Actualizar producto";
-            $("cancelar").classList.remove("oculto");
-            $("vistaPrevia").src = imagenActual;
-            $("vistaPrevia").style.display = imagenActual ? "block" : "none";
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          });
+$("cancelarEdicion").onclick=limpiarProducto;
 
-          const eliminar = document.createElement("button");
-          eliminar.textContent = "Eliminar";
-          eliminar.className = "eliminar";
-          eliminar.addEventListener("click", async () => {
-            if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
-            try {
-              await deleteDoc(doc(db, "productos", id));
-              await cargarProductos();
-            } catch (error) {
-              alert("No se pudo eliminar: " + error.message);
-            }
-          });
+async function cargarProductos(){
+const snap=await getDocs(collection(db,"productos"));
+productos=snap.docs.map(d=>({id:d.id,...d.data()}));
+$("listaProductos").innerHTML="";
+if(!productos.length){
+$("listaProductos").textContent="Todavía no hay productos.";
+return;
+}
 
-          info.append(nombre, detalle, editar, eliminar);
-          tarjeta.append(imagen, info);
-          $("lista").append(tarjeta);
-        });
-      } catch (error) {
-        $("lista").textContent = "No se pudieron cargar los productos: " + error.message;
-      }
-    }
-  </script>
+productos.forEach(p=>{
+const div=document.createElement("div");
+div.className="card item";
+const img=document.createElement("img");
+img.src=p.imagen||"";
+const info=document.createElement("div");
+info.className="item-info";
+const nombre=document.createElement("strong");
+nombre.textContent=p.nombre||"Producto";
+const detalle=document.createElement("p");
+detalle.className="small";
+detalle.textContent=(p.categoria||"Sin categoría")+
+(p.subcategoria?" → "+p.subcategoria:"");
+const editar=document.createElement("button");
+editar.className="sec";
+editar.textContent="Editar";
+editar.onclick=()=>editarProducto(p);
+const borrar=document.createElement("button");
+borrar.className="del";
+borrar.textContent="Eliminar";
+borrar.onclick=async()=>{
+if(!confirm("¿Eliminar este producto?"))return;
+try{
+await deleteDoc(doc(db,"productos",p.id));
+await cargarProductos();
+}catch(e){alert("No se pudo eliminar: "+e.message);}
+};
+info.append(nombre,detalle,editar,borrar);
+div.append(img,info);
+$("listaProductos").append(div);
+});
+}
+
+function editarProducto(p){
+editandoProducto=p.id;
+$("nombre").value=p.nombre||"";
+$("descripcion").value=p.descripcion||"";
+$("categoriaProducto").value=p.categoriaId||"";
+actualizarSubproductos();
+$("subcategoriaProducto").value=p.subcategoriaId||"";
+imagenActual=p.imagen||"";
+if(imagenActual){
+$("preview").src=imagenActual;
+$("preview").classList.remove("hidden");
+}
+$("guardarProducto").textContent="Actualizar producto";
+$("cancelarEdicion").classList.remove("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
 </body>
 </html>
-
