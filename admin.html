@@ -2,324 +2,350 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Administración | JANIACRIL</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f7f3;color:#183021}
-header{background:#176f38;color:white;padding:22px;text-align:center}
-main{max-width:850px;margin:30px auto;padding:20px}
-.panel{background:white;padding:25px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 15px #0001}
-h2{margin-top:0}
-input,textarea,select{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #ccd8ce;border-radius:7px;font:inherit}
-button{border:0;border-radius:7px;padding:12px 17px;background:#16833d;color:white;font-weight:bold;cursor:pointer;margin:4px}
-button.sec{background:#66736a}
-button.danger{background:#bd3434}
-.producto{border:1px solid #e1e9e2;border-radius:10px;padding:14px;margin:12px 0;display:flex;gap:15px;align-items:center}
-.producto img{width:90px;height:85px;object-fit:cover;border-radius:8px}
-.producto-info{flex:1}
-small{color:#66736a}
-#panelAdmin,#mensaje{display:none}
-#estado{color:#176f38;font-weight:bold}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración | JANIACRIL</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 25px;
+      font-family: Arial, sans-serif;
+      background: #f2f7f3;
+      color: #24352b;
+    }
+    .contenedor {
+      max-width: 750px;
+      margin: 25px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 18px #00000012;
+    }
+    h1, h2 { color: #246b45; }
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    input, textarea {
+      border: 1px solid #ccd8ce;
+    }
+    button {
+      border: 0;
+      background: #287449;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #1d5937; }
+    .secundario { background: #64766a; }
+    .eliminar { background: #b83b3b; }
+    .producto {
+      border: 1px solid #dce7df;
+      padding: 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    .producto img {
+      width: 85px;
+      height: 85px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .producto-info { flex: 1; }
+    .producto button { margin-top: 5px; }
+    #panel { display: none; }
+    #mensaje { font-weight: bold; }
+    .oculto { display: none; }
+  </style>
 </head>
 <body>
-<header>
-<h1>JANIACRIL</h1>
-<p>Panel de administración</p>
-</header>
 
-<main>
-<section class="panel" id="login">
-<h2>Iniciar sesión</h2>
-<p>Ingresa con tu cuenta de administrador.</p>
-<input id="email" type="email" placeholder="Correo electrónico">
-<input id="password" type="password" placeholder="Contraseña">
-<button id="entrar">Ingresar</button>
-<p id="errorLogin" style="color:#bd3434"></p>
-</section>
+  <div class="contenedor">
+    <h1>JANIACRIL</h1>
+    <p>Panel de administración de productos</p>
 
-<section id="panelAdmin">
-<div class="panel">
-<h2>Administrar productos</h2>
-<p id="estado">Sesión iniciada</p>
-<button class="sec" id="salir">Cerrar sesión</button>
-</div>
+    <section id="login">
+      <h2>Iniciar sesión</h2>
+      <input id="correo" type="email" placeholder="Correo electrónico">
+      <input id="clave" type="password" placeholder="Contraseña">
+      <button id="entrar">Ingresar</button>
+      <p id="mensaje"></p>
+    </section>
 
-<div class="panel">
-<h2 id="tituloFormulario">Agregar producto</h2>
-<form id="formProducto">
-<label>Nombre del producto</label>
-<input id="nombre" required placeholder="Ej: Exhibidor de tortas">
+    <section id="panel">
+      <button id="salir" class="secundario">Cerrar sesión</button>
 
-<label>Categoría</label>
-<select id="categoria">
-<option>Repostería</option>
-<option>Señalética</option>
-<option>Organización</option>
-<option>Otros</option>
-</select>
+      <h2 id="tituloFormulario">Agregar producto</h2>
+      <input id="nombre" placeholder="Nombre del producto">
+      <input id="categoria" placeholder="Categoría">
+      <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
 
-<label>Descripción</label>
-<textarea id="descripcion" rows="3" placeholder="Describe el producto"></textarea>
+      <label for="foto"><strong>Foto del producto:</strong></label>
+      <input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
+      <p id="estadoFoto"></p>
+      <img id="vistaPrevia" style="display:none;max-width:150px;border-radius:10px;">
 
-<label>Precio (puedes dejarlo en 0 si es a consultar)</label>
-<input id="precio" type="number" min="0" value="0">
+      <button id="guardar">Guardar producto</button>
+      <button id="cancelar" class="secundario oculto">Cancelar edición</button>
+      <p id="mensajePanel"></p>
 
-<label>Fotografía del producto</label>
-<input id="foto" type="file" accept="image/jpeg,image/png,image/webp">
-<small>Formatos JPG, PNG o WEBP. Máximo 5 MB.</small>
+      <hr>
+      <h2>Mis productos</h2>
+      <div id="lista"></div>
+    </section>
+  </div>
 
-<p id="estadoFoto"></p>
-<button type="submit" id="guardar">Guardar producto</button>
-<button type="button" class="sec" id="cancelar" style="display:none">Cancelar edición</button>
-</form>
-<p id="mensaje"></p>
-</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      updateDoc,
+      deleteDoc,
+      doc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<div class="panel">
-<h2>Productos publicados</h2>
-<div id="listaProductos">Cargando productos...</div>
-</div>
-</section>
-</main>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGDx598ENGfbUADWOXsdmXe42n1Lf-24",
+      authDomain: "janiacril-50a9b.firebaseapp.com",
+      projectId: "janiacril-50a9b",
+      storageBucket: "janiacril-50a9b.firebasestorage.app",
+      messagingSenderId: "213743116298",
+      appId: "1:213743116298:web:b3d2055fc470edb55c3ff3",
+      measurementId: "G-F5VLPGVRQF"
+    };
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth, signInWithEmailAndPassword,
-  onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getFirestore, collection, addDoc, updateDoc,
-  deleteDoc, doc, onSnapshot, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBGDx598ENGfbUADWOXsdmXeS42n1Lf-24",
-  authDomain: "janiacril-50a9b.firebaseapp.com",
-  projectId: "janiacril-50a9b",
-  storageBucket: "janiacril-50a9b.firebasestorage.app",
-  messagingSenderId: "213743116298",
-  appId: "1:213743116298:web:b3d2055fc470edb55c3ff3",
-  measurementId: "G-F5VLPGVRQF"
-};
+    const ADMIN_UID = "4vCpe7JpzdM6GqP7V1hpcBK530d2";
+    const CLOUD_NAME = "llxnor52";
+    const UPLOAD_PRESET = "janiacril_productos";
 
-const CLOUD_NAME = "llxnor52";
-const UPLOAD_PRESET = "janiacril_productos";
+    let imagenActual = "";
+    let productoEditando = null;
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    const $ = id => document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-let editando = null;
-let imagenActual = "";
-let detenerLista = null;
+    $("entrar").addEventListener("click", async () => {
+      $("mensaje").textContent = "Ingresando...";
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          $("correo").value.trim(),
+          $("clave").value
+        );
+      } catch (error) {
+        $("mensaje").textContent = "No se pudo ingresar. Revisa tu correo y contraseña.";
+      }
+    });
 
-function mostrarMensaje(texto, error = false) {
-  $("mensaje").style.display = "block";
-  $("mensaje").style.color = error ? "#bd3434" : "#176f38";
-  $("mensaje").textContent = texto;
-}
+    $("salir").addEventListener("click", () => signOut(auth));
 
-function escapar(texto) {
-  return String(texto ?? "").replace(/[&<>"']/g, letra => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#39;"
-  })[letra]);
-}
+    onAuthStateChanged(auth, user => {
+      if (user && user.uid === ADMIN_UID) {
+        $("login").style.display = "none";
+        $("panel").style.display = "block";
+        $("mensaje").textContent = "";
+        cargarProductos();
+      } else {
+        $("panel").style.display = "none";
+        $("login").style.display = "block";
+        if (user) {
+          $("mensaje").textContent = "Esta cuenta no tiene permiso de administración.";
+          signOut(auth);
+        }
+      }
+    });
 
-$("entrar").addEventListener("click", async () => {
-  $("errorLogin").textContent = "";
-  try {
-    await signInWithEmailAndPassword(
-      auth, $("email").value.trim(), $("password").value
-    );
-  } catch (error) {
-    $("errorLogin").textContent =
-      "No se pudo iniciar sesión. Revisa tu correo y contraseña.";
-  }
-});
+    $("foto").addEventListener("change", () => {
+      const archivo = $("foto").files[0];
+      if (!archivo) return;
 
-$("salir").addEventListener("click", () => signOut(auth));
-
-onAuthStateChanged(auth, user => {
-  $("login").style.display = user ? "none" : "block";
-  $("panelAdmin").style.display = user ? "block" : "none";
-
-  if (detenerLista) {
-    detenerLista();
-    detenerLista = null;
-  }
-
-  if (user) {
-    $("estado").textContent = "Sesión iniciada: " + user.email;
-    cargarProductos();
-  }
-});
-
-function cargarProductos() {
-  detenerLista = onSnapshot(
-    collection(db, "productos"),
-    snapshot => {
-      const lista = $("listaProductos");
-
-      if (snapshot.empty) {
-        lista.innerHTML = "Todavía no hay productos publicados.";
+      if (archivo.size > 5 * 1024 * 1024) {
+        $("estadoFoto").textContent = "La foto debe pesar menos de 5 MB.";
+        $("foto").value = "";
         return;
       }
 
-      lista.innerHTML = snapshot.docs.map(d => {
-        const p = d.data();
-        return `
-          <article class="producto">
-            ${p.imagen ? `<img src="${escapar(p.imagen)}" alt="">` : ""}
-            <div class="producto-info">
-              <strong>${escapar(p.nombre)}</strong><br>
-              <small>${escapar(p.categoria)}</small><br>
-              <small>${escapar(p.descripcion)}</small><br>
-              <small>Precio: ${Number(p.precio) > 0 ? "$" + Number(p.precio).toLocaleString("es-CL") : "A consultar"}</small>
-              <br>
-              <button data-editar="${d.id}">Editar</button>
-              <button class="danger" data-eliminar="${d.id}">Eliminar</button>
-            </div>
-          </article>`;
-      }).join("");
+      $("vistaPrevia").src = URL.createObjectURL(archivo);
+      $("vistaPrevia").style.display = "block";
+      $("estadoFoto").textContent = "Foto seleccionada.";
+    });
 
-      lista.querySelectorAll("[data-editar]").forEach(b => {
-        b.addEventListener("click", () => editarProducto(
-          snapshot.docs.find(d => d.id === b.dataset.editar)
-        ));
-      });
+    async function subirFoto(archivo) {
+      const datos = new FormData();
+      datos.append("file", archivo);
+      datos.append("upload_preset", UPLOAD_PRESET);
 
-      lista.querySelectorAll("[data-eliminar]").forEach(b => {
-        b.addEventListener("click", () => eliminarProducto(b.dataset.eliminar));
-      });
-    },
-    error => mostrarMensaje("Error al cargar productos: " + error.message, true)
-  );
-}
+      const respuesta = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        { method: "POST", body: datos }
+      );
 
-async function subirImagen(archivo) {
-  if (!archivo) return imagenActual;
+      const resultado = await respuesta.json();
 
-  if (!["image/jpeg", "image/png", "image/webp"].includes(archivo.type)) {
-    throw new Error("Elige una imagen JPG, PNG o WEBP.");
-  }
+      if (!respuesta.ok) {
+        throw new Error(resultado.error?.message || "No se pudo subir la foto.");
+      }
 
-  if (archivo.size > 5 * 1024 * 1024) {
-    throw new Error("La imagen debe pesar menos de 5 MB.");
-  }
-
-  $("estadoFoto").textContent = "Subiendo fotografía...";
-
-  const datos = new FormData();
-  datos.append("file", archivo);
-  datos.append("upload_preset", UPLOAD_PRESET);
-  datos.append("folder", "janiacril/productos");
-
-  const respuesta = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-    { method: "POST", body: datos }
-  );
-
-  const resultado = await respuesta.json();
-
-  if (!respuesta.ok) {
-    throw new Error(resultado.error?.message || "No se pudo subir la imagen.");
-  }
-
-  $("estadoFoto").textContent = "Fotografía subida correctamente.";
-  return resultado.secure_url;
-}
-
-$("formProducto").addEventListener("submit", async evento => {
-  evento.preventDefault();
-
-  const boton = $("guardar");
-  boton.disabled = true;
-  boton.textContent = "Guardando...";
-
-  try {
-    const archivo = $("foto").files[0];
-    const imagen = await subirImagen(archivo);
-
-    const producto = {
-      nombre: $("nombre").value.trim(),
-      categoria: $("categoria").value,
-      descripcion: $("descripcion").value.trim(),
-      precio: Number($("precio").value) || 0,
-      imagen,
-      actualizado: serverTimestamp()
-    };
-
-    if (!producto.nombre) throw new Error("Escribe el nombre del producto.");
-
-    if (editando) {
-      await updateDoc(doc(db, "productos", editando), producto);
-      mostrarMensaje("¡Producto actualizado correctamente!");
-    } else {
-      await addDoc(collection(db, "productos"), {
-        ...producto,
-        creado: serverTimestamp()
-      });
-      mostrarMensaje("¡Producto agregado correctamente!");
+      return resultado.secure_url;
     }
 
-    limpiarFormulario();
-  } catch (error) {
-    mostrarMensaje(error.message, true);
-  } finally {
-    boton.disabled = false;
-    boton.textContent = "Guardar producto";
-  }
-});
+    $("guardar").addEventListener("click", async () => {
+      const nombre = $("nombre").value.trim();
+      const categoria = $("categoria").value.trim();
+      const descripcion = $("descripcion").value.trim();
+      const archivo = $("foto").files[0];
 
-function editarProducto(documento) {
-  const p = documento.data();
-  editando = documento.id;
-  imagenActual = p.imagen || "";
+      if (!nombre) {
+        $("mensajePanel").textContent = "Escribe el nombre del producto.";
+        return;
+      }
 
-  $("nombre").value = p.nombre || "";
-  $("categoria").value = p.categoria || "Otros";
-  $("descripcion").value = p.descripcion || "";
-  $("precio").value = p.precio || 0;
-  $("foto").value = "";
-  $("tituloFormulario").textContent = "Editar producto";
-  $("guardar").textContent = "Guardar cambios";
-  $("cancelar").style.display = "inline-block";
-  $("estadoFoto").textContent = imagenActual
-    ? "Hay una fotografía guardada. Puedes conservarla o subir otra."
-    : "";
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+      $("guardar").disabled = true;
+      $("mensajePanel").textContent = "Guardando producto...";
 
-async function eliminarProducto(id) {
-  if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
+      try {
+        if (archivo) {
+          imagenActual = await subirFoto(archivo);
+        }
 
-  try {
-    await deleteDoc(doc(db, "productos", id));
-    mostrarMensaje("Producto eliminado.");
-    if (editando === id) limpiarFormulario();
-  } catch (error) {
-    mostrarMensaje("No se pudo eliminar: " + error.message, true);
-  }
-}
+        if (!imagenActual) {
+          $("mensajePanel").textContent = "Selecciona una foto para el producto.";
+          return;
+        }
 
-function limpiarFormulario() {
-  $("formProducto").reset();
-  $("precio").value = 0;
-  $("tituloFormulario").textContent = "Agregar producto";
-  $("guardar").textContent = "Guardar producto";
-  $("cancelar").style.display = "none";
-  $("estadoFoto").textContent = "";
-  editando = null;
-  imagenActual = "";
-}
+        const datos = {
+          nombre,
+          categoria,
+          descripcion,
+          imagen: imagenActual,
+          activo: true
+        };
 
-$("cancelar").addEventListener("click", limpiarFormulario);
-</script>
+        if (productoEditando) {
+          await updateDoc(doc(db, "productos", productoEditando), datos);
+          $("mensajePanel").textContent = "¡Producto actualizado!";
+        } else {
+          datos.creado = serverTimestamp();
+          await addDoc(collection(db, "productos"), datos);
+          $("mensajePanel").textContent = "¡Producto agregado!";
+        }
+
+        limpiarFormulario();
+        await cargarProductos();
+
+      } catch (error) {
+        $("mensajePanel").textContent = "Error: " + error.message;
+      } finally {
+        $("guardar").disabled = false;
+      }
+    });
+
+    function limpiarFormulario() {
+      $("nombre").value = "";
+      $("categoria").value = "";
+      $("descripcion").value = "";
+      $("foto").value = "";
+      $("vistaPrevia").style.display = "none";
+      $("estadoFoto").textContent = "";
+      imagenActual = "";
+      productoEditando = null;
+      $("tituloFormulario").textContent = "Agregar producto";
+      $("guardar").textContent = "Guardar producto";
+      $("cancelar").classList.add("oculto");
+    }
+
+    $("cancelar").addEventListener("click", limpiarFormulario);
+
+    async function cargarProductos() {
+      $("lista").innerHTML = "Cargando productos...";
+
+      try {
+        const consulta = await getDocs(collection(db, "productos"));
+        $("lista").innerHTML = "";
+
+        if (consulta.empty) {
+          $("lista").textContent = "Todavía no has agregado productos.";
+          return;
+        }
+
+        consulta.forEach(documento => {
+          const p = documento.data();
+          const id = documento.id;
+
+          const tarjeta = document.createElement("div");
+          tarjeta.className = "producto";
+
+          const imagen = document.createElement("img");
+          imagen.src = p.imagen || "";
+          imagen.alt = p.nombre || "Producto";
+
+          const info = document.createElement("div");
+          info.className = "producto-info";
+
+          const nombre = document.createElement("strong");
+          nombre.textContent = p.nombre || "Sin nombre";
+
+          const detalle = document.createElement("p");
+          detalle.textContent = p.categoria || "";
+
+          const editar = document.createElement("button");
+          editar.textContent = "Editar";
+          editar.addEventListener("click", () => {
+            productoEditando = id;
+            $("nombre").value = p.nombre || "";
+            $("categoria").value = p.categoria || "";
+            $("descripcion").value = p.descripcion || "";
+            imagenActual = p.imagen || "";
+            $("tituloFormulario").textContent = "Editar producto";
+            $("guardar").textContent = "Actualizar producto";
+            $("cancelar").classList.remove("oculto");
+            $("vistaPrevia").src = imagenActual;
+            $("vistaPrevia").style.display = imagenActual ? "block" : "none";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+
+          const eliminar = document.createElement("button");
+          eliminar.textContent = "Eliminar";
+          eliminar.className = "eliminar";
+          eliminar.addEventListener("click", async () => {
+            if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
+            try {
+              await deleteDoc(doc(db, "productos", id));
+              await cargarProductos();
+            } catch (error) {
+              alert("No se pudo eliminar: " + error.message);
+            }
+          });
+
+          info.append(nombre, detalle, editar, eliminar);
+          tarjeta.append(imagen, info);
+          $("lista").append(tarjeta);
+        });
+      } catch (error) {
+        $("lista").textContent = "No se pudieron cargar los productos: " + error.message;
+      }
+    }
+  </script>
 </body>
 </html>
+
