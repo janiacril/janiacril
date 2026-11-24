@@ -161,14 +161,38 @@ section{padding:48px 5%}
 </footer>
 
 <script>
+
 const productos = [
-  {nombre:"Exhibidores de acrílico",icono:"◫",descripcion:"Exhibidores para productos y comercios."},
-  {nombre:"Vitrinas",icono:"▣",descripcion:"Vitrinas y soluciones de exposición."},
-  {nombre:"Cajas y organizadores",icono:"▤",descripcion:"Organización y almacenamiento."},
-  {nombre:"Letreros y señaléticas",icono:"▱",descripcion:"Señalética y letreros personalizados."},
-  {nombre:"Acrílicos a medida",icono:"◇",descripcion:"Cortes y trabajos según tus medidas."},
-  {nombre:"Productos personalizados",icono:"✧",descripcion:"Creamos productos según tu idea."}
+  {
+    nombre: "Exhibidor de tortas",
+    categoria: "Repostería",
+    imagen: "exhibidor-tortas.webp",
+    descripcion: "Exhibidor transparente de acrílico de varios niveles.",
+    precio: 0
+  },
+  {
+    nombre: "Porta tortas",
+    categoria: "Repostería",
+    imagen: "porta-tortas.webp",
+    descripcion: "Soportes de acrílico para exhibición de tortas.",
+    precio: 0
+  },
+  {
+    nombre: "Organizador de macarons",
+    categoria: "Repostería",
+    imagen: "organizador-macarons.webp",
+    descripcion: "Organizador transparente para macarons y dulces.",
+    precio: 0
+  },
+  {
+    nombre: "Porta menú 10 x 15",
+    categoria: "Señalética",
+    imagen: "porta-menu.webp",
+    descripcion: "Porta menú de acrílico para negocios y restaurantes.",
+    precio: 0
+  }
 ];
+
 let carrito=[];
 const catalogo=document.getElementById("catalogo");
 productos.forEach((p,i)=>{
