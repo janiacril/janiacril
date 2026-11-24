@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JANIACRIL | Fabricamos tus ideas</title>
+<meta name="description" content="Fabricación de productos de acrílico a medida, exhibidores, vitrinas, cajas, letreros y organizadores.">
+<style>
+:root {
+  --green:#16833d;
+  --dark:#14251b;
+  --light:#f5f8f5;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;color:var(--dark)}
+header{background:white;padding:16px 6%;display:flex;
+justify-content:space-between;align-items:center;
+position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #0001}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px}
+.logo span{color:var(--green)}
+nav a{color:var(--dark);text-decoration:none;margin-left:18px;font-weight:bold;font-size:14px}
+.hero{background:linear-gradient(120deg,#10291b,#238347);
+color:white;padding:90px 8%;text-align:center}
+.hero h1{font-size:clamp(38px,6vw,65px);margin:0 0 15px}
+.hero p{font-size:19px;line-height:1.6}
+.btn{display:inline-block;background:var(--green);color:white;
+padding:14px 22px;border:0;border-radius:7px;text-decoration:none;
+font-weight:bold;cursor:pointer;margin:5px}
+.btn.white{background:white;color:var(--dark)}
+section{padding:65px 7%}
+h2{text-align:center;font-size:32px;margin:0 0 14px}
+.subtitle{text-align:center;color:#68756b;margin-bottom:35px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{border:1px solid #e5ebe5;border-radius:13px;overflow:hidden;background:white}
+.card .visual{height:155px;background:linear-gradient(135deg,#e8f2e9,#c8dfce);
+display:grid;place-items:center;font-size:65px}
+.card-content{padding:18px}
+.card h3{margin:0 0 9px}
+.card p{color:#68756b;line-height:1.5;font-size:14px}
+.price{font-weight:bold;color:var(--green)}
+.about{background:var(--light);text-align:center;line-height:1.8}
+.contact{text-align:center;background:#14251b;color:white}
+footer{text-align:center;background:#0c1911;color:#ddd;padding:25px}
+.cart{position:fixed;bottom:20px;right:20px;z-index:8;
+background:var(--green);color:white;padding:15px 20px;
+border-radius:30px;border:0;font-weight:bold;cursor:pointer;
+box-shadow:0 4px 15px #0003}
+#cartPanel{display:none;position:fixed;z-index:10;bottom:85px;
+right:20px;background:white;padding:20px;width:min(340px,90vw);
+max-height:65vh;overflow:auto;border-radius:12px;
+box-shadow:0 4px 25px #0003}
+input,textarea{width:100%;padding:12px;margin:7px 0;
+border:1px solid #ccd5cc;border-radius:6px;font:inherit}
+@media(max-width:650px){
+header{padding:13px 4%;flex-wrap:wrap}
+nav{width:100%;margin-top:12px}
+nav a{margin:0 12px 0 0;font-size:12px}
+.hero{padding:65px 6%}
+section{padding:48px 5%}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">JANI<span>ACRIL</span></div>
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#productos">Productos</a>
+    <a href="#empresa">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <h1>JANIACRIL</h1>
+  <h2>Fabricamos tus ideas</h2>
+  <p>Diseño y fabricación de productos en acrílico.<br>
+  Creamos soluciones a medida para tu negocio.</p>
+  <a class="btn white" href="#productos">Ver productos</a>
+  <a class="btn" href="https://wa.me/56975370496">Cotizar por WhatsApp</a>
+</section>
+
+<section id="productos">
+  <h2>Nuestros productos</h2>
+  <p class="subtitle">Soluciones en acrílico para cada necesidad</p>
+  <div class="grid" id="catalogo"></div>
+</section>
+
+<section class="about" id="empresa">
+  <h2>Conoce JANIACRIL</h2>
+  <p>Somos una empresa dedicada al diseño y fabricación
+  de productos en acrílico. Trabajamos para transformar
+  tus ideas en soluciones funcionales y personalizadas.</p>
+  <h3>Fabricamos tus ideas.</h3>
+</section>
+
+<section id="cotizaciones">
+  <h2>¿Tienes un proyecto especial?</h2>
+  <p class="subtitle">Cuéntanos qué necesitas y solicita una cotización.</p>
+  <div style="max-width:550px;margin:auto">
+    <input id="nombre" placeholder="Tu nombre">
+    <textarea id="detalle" rows="4" placeholder="Describe tu proyecto, medidas y cantidad"></textarea>
+    <button class="btn" onclick="cotizar()">Solicitar cotización</button>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <h2>Estamos para ayudarte</h2>
+  <p>¿Tienes preguntas o quieres hacer un pedido?</p>
+  <a class="btn white" href="https://wa.me/56975370496">
+    Contactar por WhatsApp
+  </a>
+  <p>WhatsApp: +56 9 7537 0496</p>
+</section>
+</main>
+
+<button class="cart" onclick="toggleCart()">🛒 Carrito (<span id="count">0</span>)</button>
+<div id="cartPanel">
+  <h3>Tu carrito</h3>
+  <div id="cartItems">Todavía no has agregado productos.</div>
+  <button class="btn" onclick="enviarPedido()">Enviar pedido por WhatsApp</button>
+  <button class="btn" style="background:#777" onclick="toggleCart()">Cerrar</button>
+</div>
+
+<footer>
+  <strong>JANIACRIL</strong><br>
+  Fabricamos tus ideas.<br>
+  © 2026 JANIACRIL. Todos los derechos reservados.
+</footer>
+
+<script>
+const productos = [
+  {nombre:"Exhibidores de acrílico",icono:"◫",descripcion:"Exhibidores para productos y comercios."},
+  {nombre:"Vitrinas",icono:"▣",descripcion:"Vitrinas y soluciones de exposición."},
+  {nombre:"Cajas y organizadores",icono:"▤",descripcion:"Organización y almacenamiento."},
+  {nombre:"Letreros y señaléticas",icono:"▱",descripcion:"Señalética y letreros personalizados."},
+  {nombre:"Acrílicos a medida",icono:"◇",descripcion:"Cortes y trabajos según tus medidas."},
+  {nombre:"Productos personalizados",icono:"✧",descripcion:"Creamos productos según tu idea."}
+];
+let carrito=[];
+const catalogo=document.getElementById("catalogo");
+productos.forEach((p,i)=>{
+  catalogo.innerHTML+=`
+  <article class="card">
+    <div class="visual">${p.icono}</div>
+    <div class="card-content">
+      <h3>${p.nombre}</h3>
+      <p>${p.descripcion}</p>
+      <p class="price">Precio a consultar</p>
+      <button class="btn" onclick="agregar(${i})">Agregar al carrito</button>
+      <a class="btn" href="https://wa.me/56975370496?text=${encodeURIComponent('Hola JANIACRIL, quiero consultar por '+p.nombre)}">Consultar</a>
+    </div>
+  </article>`;
+});
+function agregar(i){carrito.push(productos[i]);actualizar();}
+function actualizar(){
+ document.getElementById("count").textContent=carrito.length;
+ document.getElementById("cartItems").innerHTML=carrito.length?
+ carrito.map(p=>`<p>${p.nombre}</p>`).join(""):"Todavía no has agregado productos.";
+}
+function toggleCart(){
+ const panel=document.getElementById("cartPanel");
+ panel.style.display=panel.style.display==="block"?"none":"block";
+}
+function enviarPedido(){
+ if(!carrito.length){alert("Agrega un producto primero.");return;}
+ const detalle=carrito.map(p=>p.nombre).join(", ");
+ window.open("https://wa.me/56975370496?text="+encodeURIComponent("Hola JANIACRIL, quisiera cotizar estos productos: "+detalle),"_blank");
+}
+function cotizar(){
+ const n=document.getElementById("nombre").value;
+ const d=document.getElementById("detalle").value;
+ if(!n||!d){alert("Completa tu nombre y proyecto.");return;}
+ window.open("https://wa.me/56975370496?text="+encodeURIComponent("Hola, soy "+n+". Quisiera cotizar: "+d),"_blank");
+}
+</script>
+</body>
+</html>
