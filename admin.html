@@ -124,7 +124,7 @@ $("entrar").onclick=async()=>{
 $("mensaje").textContent="Ingresando...";
 try{
 await signInWithEmailAndPassword(auth,$("correo").value.trim(),$("clave").value);
-}catch(e){$("mensaje").textContent="No se pudo ingresar. Revisa tu correo y contraseña.";}
+}catch(e){$("mensaje").textContent="$("mensaje").textContent = "Error: " + e.code + " - " + e.message;";}
 };
 
 $("salir").onclick=()=>signOut(auth);
