@@ -6,41 +6,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JANIACRIL | Fabricamos tus ideas</title>
 <meta name="description" content="Fabricación de productos de acrílico a medida, exhibidores, vitrinas, cajas, letreros y organizadores.">
+
 <style>
-:root {
-  .logo {
-  width: 100px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
+:root{
   --green:#16833d;
   --dark:#14251b;
   --light:#f5f8f5;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;color:var(--dark)}
-header{background:white;padding:16px 6%;display:flex;
-justify-content:space-between;align-items:center;
-position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #0001}
-.logo{font-size:27px;font-weight:900;letter-spacing:1px}
-.logo span{color:var(--green)}
-nav a{color:var(--dark);text-decoration:none;margin-left:18px;font-weight:bold;font-size:14px}
-.hero{background:linear-gradient(120deg,#10291b,#238347);
-color:white;padding:90px 8%;text-align:center}
+header{
+  background:white;padding:14px 6%;display:flex;
+  justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:5;
+  box-shadow:0 2px 12px #0001
+}
+.logo img{width:100px;height:auto;display:block}
+nav a{
+  color:var(--dark);text-decoration:none;
+  margin-left:18px;font-weight:bold;font-size:14px
+}
+.hero{
+  background:linear-gradient(120deg,#10291b,#238347);
+  color:white;padding:90px 8%;text-align:center
+}
 .hero h1{font-size:clamp(38px,6vw,65px);margin:0 0 15px}
+.hero h2{color:white}
 .hero p{font-size:19px;line-height:1.6}
-.btn{display:inline-block;background:var(--green);color:white;
-padding:14px 22px;border:0;border-radius:7px;text-decoration:none;
-font-weight:bold;cursor:pointer;margin:5px}
+.btn{
+  display:inline-block;background:var(--green);color:white;
+  padding:13px 20px;border:0;border-radius:7px;
+  text-decoration:none;font-weight:bold;cursor:pointer;margin:5px
+}
 .btn.white{background:white;color:var(--dark)}
 section{padding:65px 7%}
 h2{text-align:center;font-size:32px;margin:0 0 14px}
 .subtitle{text-align:center;color:#68756b;margin-bottom:35px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
-.card{border:1px solid #e5ebe5;border-radius:13px;overflow:hidden;background:white}
-.card .visual{height:155px;background:linear-gradient(135deg,#e8f2e9,#c8dfce);
-display:grid;place-items:center;font-size:65px}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:22px
+}
+.card{
+  border:1px solid #e5ebe5;border-radius:13px;
+  overflow:hidden;background:white
+}
+.card .visual{
+  height:190px;background:linear-gradient(135deg,#e8f2e9,#c8dfce);
+  display:grid;place-items:center;font-size:65px
+}
+.card .visual img{width:100%;height:100%;object-fit:cover}
 .card-content{padding:18px}
 .card h3{margin:0 0 9px}
 .card p{color:#68756b;line-height:1.5;font-size:14px}
@@ -48,31 +63,45 @@ display:grid;place-items:center;font-size:65px}
 .about{background:var(--light);text-align:center;line-height:1.8}
 .contact{text-align:center;background:#14251b;color:white}
 footer{text-align:center;background:#0c1911;color:#ddd;padding:25px}
-.cart{position:fixed;bottom:20px;right:20px;z-index:8;
-background:var(--green);color:white;padding:15px 20px;
-border-radius:30px;border:0;font-weight:bold;cursor:pointer;
-box-shadow:0 4px 15px #0003}
-#cartPanel{display:none;position:fixed;z-index:10;bottom:85px;
-right:20px;background:white;padding:20px;width:min(340px,90vw);
-max-height:65vh;overflow:auto;border-radius:12px;
-box-shadow:0 4px 25px #0003}
-input,textarea{width:100%;padding:12px;margin:7px 0;
-border:1px solid #ccd5cc;border-radius:6px;font:inherit}
+.cart{
+  position:fixed;bottom:20px;right:20px;z-index:8;
+  background:var(--green);color:white;padding:15px 20px;
+  border-radius:30px;border:0;font-weight:bold;cursor:pointer;
+  box-shadow:0 4px 15px #0003
+}
+#cartPanel{
+  display:none;position:fixed;z-index:10;bottom:85px;
+  right:20px;background:white;padding:20px;
+  width:min(370px,92vw);max-height:70vh;overflow:auto;
+  border-radius:12px;box-shadow:0 4px 25px #0003
+}
+.cart-line{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:8px;border-bottom:1px solid #eee;
+  padding:10px 0
+}
+.cart-line button{padding:6px 10px;margin:2px}
+.cart-line strong{font-size:14px}
+input,textarea{
+  width:100%;padding:12px;margin:7px 0;
+  border:1px solid #ccd5cc;border-radius:6px;font:inherit
+}
 @media(max-width:650px){
-header{padding:13px 4%;flex-wrap:wrap}
-nav{width:100%;margin-top:12px}
-nav a{margin:0 12px 0 0;font-size:12px}
-.hero{padding:65px 6%}
-section{padding:48px 5%}
+  header{padding:13px 4%;flex-wrap:wrap}
+  .logo img{width:80px}
+  nav{width:100%;margin-top:12px}
+  nav a{margin:0 12px 0 0;font-size:12px}
+  .hero{padding:65px 6%}
+  section{padding:48px 5%}
 }
 </style>
 </head>
-<body>
 
+<body>
 <header>
-<a href="#inicio" class="logo">
-  <img src="./logo-janiacril.png" alt="JANIACRIL">
-</a>
+  <a href="#inicio" class="logo">
+    <img src="./logo-janiacril.png" alt="JANIACRIL">
+  </a>
   <nav>
     <a href="#inicio">Inicio</a>
     <a href="#productos">Productos</a>
@@ -94,14 +123,14 @@ section{padding:48px 5%}
 <section id="productos">
   <h2>Nuestros productos</h2>
   <p class="subtitle">Soluciones en acrílico para cada necesidad</p>
-  <div class="grid" id="catalogo"></div>
+  <div class="grid" id="catalogo">
+    <p>Cargando productos...</p>
+  </div>
 </section>
 
 <section class="about" id="empresa">
   <h2>Conoce JANIACRIL</h2>
-  <p>Somos una empresa dedicada al diseño y fabricación
-  de productos en acrílico. Trabajamos para transformar
-  tus ideas en soluciones funcionales y personalizadas.</p>
+  <p>Somos una empresa dedicada al diseño y fabricación de productos en acrílico. Trabajamos para transformar tus ideas en soluciones funcionales y personalizadas.</p>
   <h3>Fabricamos tus ideas.</h3>
 </section>
 
@@ -115,9 +144,9 @@ section{padding:48px 5%}
   </div>
 </section>
 
-<section style="background:#f1f7f1;text-align:center;padding:55px 7%;">
+<section style="background:#f1f7f1;text-align:center;padding:55px 7%">
   <h2>Información para nuestros clientes</h2>
-  <div class="grid" style="margin-top:30px;text-align:left;">
+  <div class="grid" style="margin-top:30px;text-align:left">
     <div class="card card-content">
       <h3>📐 Trabajos a medida</h3>
       <p>Realizamos todos nuestros trabajos a medida.</p>
@@ -135,24 +164,22 @@ section{padding:48px 5%}
       <p>Enviamos a regiones mediante Starken o Chilexpress.</p>
     </div>
   </div>
-  <h2 style="margin-top:35px;">Síguenos en Instagram</h2>
-  <a class="btn" href="https://www.instagram.com/productos_en_acrilicos/"
-     target="_blank" rel="noopener">
-     📸 @productos_en_acrilicos
-  </a>
+  <h2 style="margin-top:35px">Síguenos en Instagram</h2>
+  <a class="btn" href="https://www.instagram.com/productos_en_acrilicos/" target="_blank" rel="noopener">📸 @productos_en_acrilicos</a>
 </section>
 
 <section class="contact" id="contacto">
   <h2>Estamos para ayudarte</h2>
   <p>¿Tienes preguntas o quieres hacer un pedido?</p>
-  <a class="btn white" href="https://wa.me/56975370496">
-    Contactar por WhatsApp
-  </a>
+  <a class="btn white" href="https://wa.me/56975370496">Contactar por WhatsApp</a>
   <p>WhatsApp: +56 9 7537 0496</p>
 </section>
 </main>
 
-<button class="cart" onclick="toggleCart()">🛒 Carrito (<span id="count">0</span>)</button>
+<button class="cart" onclick="toggleCart()">
+  🛒 Carrito (<span id="count">0</span>)
+</button>
+
 <div id="cartPanel">
   <h3>Tu carrito</h3>
   <div id="cartItems">Todavía no has agregado productos.</div>
@@ -167,73 +194,229 @@ section{padding:48px 5%}
 </footer>
 
 <script>
+function cotizar(){
+  const nombre=document.getElementById("nombre").value.trim();
+  const detalle=document.getElementById("detalle").value.trim();
 
-const productos = [
+  if(!nombre||!detalle){
+    alert("Completa tu nombre y proyecto.");
+    return;
+  }
+
+  const mensaje="Hola, soy "+nombre+". Quisiera cotizar: "+detalle;
+  window.open("https://wa.me/56975370496?text="+encodeURIComponent(mensaje),"_blank");
+}
+
+function toggleCart(){
+  const panel=document.getElementById("cartPanel");
+  panel.style.display=panel.style.display==="block"?"none":"block";
+}
+
+let carrito=[];
+
+try{
+  carrito=JSON.parse(localStorage.getItem("janiacril_carrito")||"[]");
+  if(!Array.isArray(carrito))carrito=[];
+}catch(e){
+  carrito=[];
+}
+
+function guardarCarrito(){
+  localStorage.setItem("janiacril_carrito",JSON.stringify(carrito));
+  actualizarCarrito();
+}
+
+function agregar(id,nombre){
+  const existente=carrito.find(p=>p.id===id);
+  if(existente){
+    existente.cantidad++;
+  }else{
+    carrito.push({id,nombre,cantidad:1});
+  }
+  guardarCarrito();
+  document.getElementById("cartPanel").style.display="block";
+}
+
+function cambiarCantidad(id,cambio){
+  const producto=carrito.find(p=>p.id===id);
+  if(!producto)return;
+
+  producto.cantidad+=cambio;
+
+  if(producto.cantidad<=0){
+    carrito=carrito.filter(p=>p.id!==id);
+  }
+
+  guardarCarrito();
+}
+
+function quitarProducto(id){
+  carrito=carrito.filter(p=>p.id!==id);
+  guardarCarrito();
+}
+
+function actualizarCarrito(){
+  const total=carrito.reduce((s,p)=>s+p.cantidad,0);
+  document.getElementById("count").textContent=total;
+
+  const contenedor=document.getElementById("cartItems");
+
+  if(!carrito.length){
+    contenedor.textContent="Todavía no has agregado productos.";
+    return;
+  }
+
+  contenedor.innerHTML=carrito.map(p=>`
+    <div class="cart-line">
+      <div>
+        <strong>${escapar(p.nombre)}</strong><br>
+        <button onclick="cambiarCantidad('${escapar(p.id)}',-1)">−</button>
+        ${p.cantidad}
+        <button onclick="cambiarCantidad('${escapar(p.id)}',1)">+</button>
+      </div>
+      <button style="background:#bd3434" onclick="quitarProducto('${escapar(p.id)}')">Eliminar</button>
+    </div>
+  `).join("");
+}
+
+function enviarPedido(){
+  if(!carrito.length){
+    alert("Agrega un producto primero.");
+    return;
+  }
+
+  const detalle=carrito.map(p=>
+    p.nombre+" (cantidad: "+p.cantidad+")"
+  ).join("\n");
+
+  const mensaje="Hola JANIACRIL, quisiera cotizar estos productos:\n"+detalle;
+  window.open("https://wa.me/56975370496?text="+encodeURIComponent(mensaje),"_blank");
+}
+
+function escapar(texto){
+  return String(texto??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+actualizarCarrito();
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyBGDx598ENGfbUADWOXsdmXe42n1Lf-24",
+  authDomain:"janiacril-50a9b.firebaseapp.com",
+  projectId:"janiacril-50a9b",
+  storageBucket:"janiacril-50a9b.firebasestorage.app",
+  messagingSenderId:"213743116298",
+  appId:"1:213743116298:web:b3d2055fc470edb55c3ff3",
+  measurementId:"G-F5VLPGVRQF"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+const productosIniciales=[
   {
-    nombre: "Exhibidor de tortas",
-    categoria: "Repostería",
-    imagen: "exhibidor-tortas.webp",
-    descripcion: "Exhibidor transparente de acrílico de varios niveles.",
-    precio: 0
+    id:"inicial-exhibidor",
+    nombre:"Exhibidor de tortas",
+    categoria:"Repostería",
+    descripcion:"Exhibidor transparente de acrílico de varios niveles.",
+    precio:0
   },
   {
-    nombre: "Porta tortas",
-    categoria: "Repostería",
-    imagen: "porta-tortas.webp",
-    descripcion: "Soportes de acrílico para exhibición de tortas.",
-    precio: 0
+    id:"inicial-porta-tortas",
+    nombre:"Porta tortas",
+    categoria:"Repostería",
+    descripcion:"Soportes de acrílico para exhibición de tortas.",
+    precio:0
   },
   {
-    nombre: "Organizador de macarons",
-    categoria: "Repostería",
-    imagen: "organizador-macarons.webp",
-    descripcion: "Organizador transparente para macarons y dulces.",
-    precio: 0
+    id:"inicial-macarons",
+    nombre:"Organizador de macarons",
+    categoria:"Repostería",
+    descripcion:"Organizador transparente para macarons y dulces.",
+    precio:0
   },
   {
-    nombre: "Porta menú 10 x 15",
-    categoria: "Señalética",
-    imagen: "porta-menu.webp",
-    descripcion: "Porta menú de acrílico para negocios y restaurantes.",
-    precio: 0
+    id:"inicial-porta-menu",
+    nombre:"Porta menú 10 x 15",
+    categoria:"Señalética",
+    descripcion:"Porta menú de acrílico para negocios y restaurantes.",
+    precio:0
   }
 ];
 
-let carrito=[];
 const catalogo=document.getElementById("catalogo");
-productos.forEach((p,i)=>{
-  catalogo.innerHTML+=`
-  <article class="card">
-    <div class="visual">${p.icono}</div>
-    <div class="card-content">
-      <h3>${p.nombre}</h3>
-      <p>${p.descripcion}</p>
-      <p class="price">Precio a consultar</p>
-      <button class="btn" onclick="agregar(${i})">Agregar al carrito</button>
-      <a class="btn" href="https://wa.me/56975370496?text=${encodeURIComponent('Hola JANIACRIL, quiero consultar por '+p.nombre)}">Consultar</a>
-    </div>
-  </article>`;
+
+function dibujarProductos(productos){
+  if(!productos.length){
+    productos=productosIniciales;
+  }
+
+  catalogo.innerHTML=productos.map(p=>{
+    const id=escapar(p.id);
+    const nombre=escapar(p.nombre);
+    const imagen=p.imagen||"";
+    const precio=Number(p.precio)>0
+      ?"$"+Number(p.precio).toLocaleString("es-CL")
+      :"Precio a consultar";
+
+    return `
+      <article class="card">
+        <div class="visual">
+          ${imagen
+            ?`<img src="${escapar(imagen)}" alt="${nombre}" loading="lazy">`
+            :"✨"}
+        </div>
+        <div class="card-content">
+          <small>${escapar(p.categoria||"")}</small>
+          <h3>${nombre}</h3>
+          <p>${escapar(p.descripcion||"")}</p>
+          <p class="price">${precio}</p>
+          <button class="btn agregar-producto"
+            data-id="${id}" data-nombre="${nombre}">
+            Agregar al carrito
+          </button>
+          <a class="btn"
+            href="https://wa.me/56975370496?text=${encodeURIComponent("Hola JANIACRIL, quiero consultar por "+(p.nombre||"este producto"))}">
+            Consultar
+          </a>
+        </div>
+      </article>`;
+  }).join("");
+
+  catalogo.querySelectorAll(".agregar-producto").forEach(b=>{
+    b.addEventListener("click",()=>{
+      window.agregarProductoDesdeCatalogo(b.dataset.id,b.dataset.nombre);
+    });
+  });
+}
+
+window.agregarProductoDesdeCatalogo=(id,nombre)=>{
+  window.agregar(id,nombre);
+};
+
+onSnapshot(collection(db,"productos"),snapshot=>{
+  const productos=snapshot.docs.map(d=>({
+    id:d.id,
+    ...d.data()
+  }));
+  dibujarProductos(productos);
+},error=>{
+  console.error("Error cargando productos:",error);
+  dibujarProductos(productosIniciales);
 });
-function agregar(i){carrito.push(productos[i]);actualizar();}
-function actualizar(){
- document.getElementById("count").textContent=carrito.length;
- document.getElementById("cartItems").innerHTML=carrito.length?
- carrito.map(p=>`<p>${p.nombre}</p>`).join(""):"Todavía no has agregado productos.";
-}
-function toggleCart(){
- const panel=document.getElementById("cartPanel");
- panel.style.display=panel.style.display==="block"?"none":"block";
-}
-function enviarPedido(){
- if(!carrito.length){alert("Agrega un producto primero.");return;}
- const detalle=carrito.map(p=>p.nombre).join(", ");
- window.open("https://wa.me/56975370496?text="+encodeURIComponent("Hola JANIACRIL, quisiera cotizar estos productos: "+detalle),"_blank");
-}
-function cotizar(){
- const n=document.getElementById("nombre").value;
- const d=document.getElementById("detalle").value;
- if(!n||!d){alert("Completa tu nombre y proyecto.");return;}
- window.open("https://wa.me/56975370496?text="+encodeURIComponent("Hola, soy "+n+". Quisiera cotizar: "+d),"_blank");
+</script>
+
+</body>
+</html>
+
 }
 </script>
 </body>
