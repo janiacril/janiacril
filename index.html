@@ -432,19 +432,12 @@ function abrirProducto(id){
  $("productoOverlay").style.display="block";
 }
 
- dibujarGaleriaProducto();
-
- $("formPersonalizar").reset();
- $("cantidad").value=1;
- $("previewReferencias").innerHTML="";
- $("productoOverlay").style.display="block";
-}
 function cerrarProducto(){
-  $("productoOverlay").style.display="none";
-  productoSeleccionado=null;
+ $("productoOverlay").style.display="none";
+ productoSeleccionado=null;
 }
 
-$("cerrarProducto").addEventListener("click", cerrarProducto);
+$("cerrarProducto").addEventListener("click",cerrarProducto);
 /* IMÁGENES DE REFERENCIA */
 $("referencias").addEventListener("change",()=>{
  const files=Array.from($("referencias").files);
