@@ -76,6 +76,58 @@ input,textarea,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ccd
 .preview{display:flex;gap:8px;flex-wrap:wrap}
 .preview img{width:75px;height:75px;object-fit:cover;border-radius:7px}
 .hint{font-size:13px;color:#69766d}
+/* CATÁLOGO Y ANIMACIONES */
+.card{
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.card:hover{
+  transform:translateY(-7px) scale(1.025);
+  box-shadow:0 12px 28px #0002;
+}
+.category-card{
+  cursor:pointer;
+  text-align:center;
+}
+.category-card .visual{
+  height:220px;
+  overflow:hidden;
+}
+.category-card .visual img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .4s ease;
+}
+.category-card:hover .visual img{
+  transform:scale(1.07);
+}
+.category-card h3{
+  margin:0;
+  padding:17px 10px;
+  color:white;
+  background:var(--green);
+}
+.catalog-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:25px;
+}
+.catalog-top h2{
+  margin:0;
+  text-align:left;
+}
+.back-button{
+  border:1px solid #16833d;
+  color:#16833d;
+  background:white;
+  padding:11px 17px;
+  border-radius:7px;
+  font-weight:bold;
+  cursor:pointer;
+}
 @media(max-width:650px){
 header{padding:13px 4%;flex-wrap:wrap}
 .logo img{width:80px}
