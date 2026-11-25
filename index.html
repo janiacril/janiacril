@@ -416,6 +416,13 @@ function abrirProducto(id){
   <h2>${esc(productoSeleccionado.nombre)}</h2>
 
   <p>${esc(productoSeleccionado.descripcion||"")}</p>
+
+  ${productoSeleccionado.masInformacion?`
+   <details class="product-more">
+    <summary>Más información</summary>
+    <p>${esc(productoSeleccionado.masInformacion)}</p>
+   </details>
+  `:""}
  `;
 
  dibujarGaleriaProducto();
@@ -425,9 +432,6 @@ function abrirProducto(id){
  $("previewReferencias").innerHTML="";
  $("productoOverlay").style.display="block";
 }
-function cerrarProducto(){$("productoOverlay").style.display="none";productoSeleccionado=null;}
-$("cerrarProducto").addEventListener("click",cerrarProducto);
-$("productoOverlay").addEventListener("click",e=>{if(e.target===$("productoOverlay"))cerrarProducto();});
 
 /* IMÁGENES DE REFERENCIA */
 $("referencias").addEventListener("change",()=>{
