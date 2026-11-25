@@ -406,6 +406,7 @@ $("foto").onchange=()=>{
 $("guardarProducto").onclick=async()=>{
  const nombre=$("nombre").value.trim();
  const descripcion=$("descripcion").value.trim();
+ const masInformacion=$("masInformacion").value.trim();
  const categoriaId=$("categoriaProducto").value;
  const categoria=categorias.find(c=>c.id===categoriaId);
  const archivos=Array.from($("foto").files);
@@ -427,13 +428,18 @@ $("guardarProducto").onclick=async()=>{
 
   const imagenesFinales=[...imagenesActuales,...nuevasImagenes];
 
-  const datos={
-   nombre,descripcion,categoriaId,categoria:categoria.nombre,
-   subcategoriaId:"",subcategoria:"",
-   imagen:imagenesFinales[0]||"",
-   imagenes:imagenesFinales,
-   activo:$("activo").checked
-  };
+const datos={
+ nombre,
+ descripcion,
+ masInformacion,
+ categoriaId,
+ categoria:categoria.nombre,
+ subcategoriaId:"",
+ subcategoria:"",
+ imagen:imagenesFinales[0]||"",
+ imagenes:imagenesFinales,
+ activo:$("activo").checked
+};
 
   if(editandoProducto){
    await updateDoc(doc(db,"productos",editandoProducto),datos);
@@ -457,6 +463,7 @@ $("guardarProducto").onclick=async()=>{
 function limpiarProducto(){
  $("nombre").value="";
  $("descripcion").value="";
+  $("masInformacion").value="";
  $("categoriaProducto").value="";
  $("foto").value="";
  $("previewGaleria").innerHTML="";
@@ -559,6 +566,7 @@ function editarProducto(p){
  editandoProducto=p.id;
  $("nombre").value=p.nombre||"";
  $("descripcion").value=p.descripcion||"";
+ $("masInformacion").value=p.masInformacion||"";
 
  let categoriaId=p.categoriaId||"";
  if(!categoriaId&&p.categoria){
