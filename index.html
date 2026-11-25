@@ -277,7 +277,7 @@ function dibujarProductos(lista){
  }
  contenedor.innerHTML+=`<div class="grid">${lista.map(p=>`
   <article class="card product-card">
-   <div class="visual">${p.imagen?`<img src="${esc(p.imagen)}" alt="${esc(p.nombre)}" loading="lazy">`:`<div class="no-image">JANIACRIL</div>`}</div>
+ <div class="visual">${((p.imagenes&&p.imagenes[0])||p.imagen)?`<img src="${esc((p.imagenes&&p.imagenes[0])||p.imagen)}" alt="${esc(p.nombre)}" loading="lazy">`:`<div class="no-image">JANIACRIL</div>`}</div>
    <div class="card-content">
     <h3>${esc(p.nombre)}</h3><p>${esc(p.descripcion||"")}</p>
     <button class="btn personalizar" data-id="${esc(p.id)}">Personalizar y cotizar</button>
