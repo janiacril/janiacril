@@ -317,11 +317,90 @@ function dibujarCatalogo(){
 }
 
 /* PERSONALIZAR PRODUCTO */
+/* GALERÍA DE FOTOGRAFÍAS DEL PRODUCTO */
+
+function fotosDelProducto(p){
+ const fotos=Array.isArray(p.imagenes)
+  ?p.imagenes.filter(Boolean)
+  :[];
+
+ if(!fotos.length&&p.imagen){
+  fotos.push(p.imagen);
+ }
+
+ return fotos;
+}
+
+function dibujarGaleriaProducto(){
+ const fotos=fotosDelProducto(productoSeleccionado);
+
+ if(!fotos.length){
+  $("galeriaProducto").innerHTML=
+   '<div class="no-image" style="height:220px">JANIACRIL</div>';
+  return;
+ }
+
+ fotoProductoActual=Math.max(
+  0,
+  Math.min(fotoProductoActual,fotos.length-1)
+ );
+
+ $("galeriaProducto").innerHTML=`
+  <div class="product-gallery">
+   <img
+    src="${esc(fotos[fotoProductoActual])}"
+    alt="${esc(productoSeleccionado.nombre)}"
+   >
+
+   ${fotos.length>1?`
+    <button type="button"
+     class="gallery-arrow prev"
+     id="fotoAnterior"
+     aria-label="Fotografía anterior">‹</button>
+
+    <button type="button"
+     class="gallery-arrow next"
+     id="fotoSiguiente"
+     aria-label="Fotografía siguiente">›</button>
+   `:""}
+  </div>
+
+  ${fotos.length>1?`
+   <div class="gallery-count">
+    ${fotoProductoActual+1} de ${fotos.length} fotografías
+   </div>
+  `:""}
+ `;
+
+ if(fotos.length>1){
+  $("fotoAnterior").onclick=()=>{
+   fotoProductoActual=(fotoProductoActual-1+fotos.length)%fotos.length;
+   dibujarGaleriaProducto();
+  };
+
+  $("fotoSiguiente").onclick=()=>{
+   fotoProductoActual=(fotoProductoActual+1)%fotos.length;
+   dibujarGaleriaProducto();
+  };
+ }
+}
+
 function abrirProducto(id){
  productoSeleccionado=productos.find(p=>p.id===id);
  if(!productoSeleccionado)return;
- $("productoDetalle").innerHTML=`${productoSeleccionado.imagen?`<img src="${esc(productoSeleccionado.imagen)}" style="width:100%;max-height:230px;object-fit:contain">`:""}
- <h2>${esc(productoSeleccionado.nombre)}</h2><p>${esc(productoSeleccionado.descripcion||"")}</p>`;
+
+ fotoProductoActual=0;
+
+ $("productoDetalle").innerHTML=`
+  <div id="galeriaProducto"></div>
+
+  <h2>${esc(productoSeleccionado.nombre)}</h2>
+
+  <p>${esc(productoSeleccionado.descripcion||"")}</p>
+ `;
+
+ dibujarGaleriaProducto();
+
  $("formPersonalizar").reset();
  $("cantidad").value=1;
  $("previewReferencias").innerHTML="";
