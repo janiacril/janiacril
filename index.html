@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -417,13 +416,21 @@ function abrirProducto(id){
 
   <p>${esc(productoSeleccionado.descripcion||"")}</p>
 
- <p>${esc(productoSeleccionado.masInformacion).replace(/\n/g,"<br>")}</p>
+  ${productoSeleccionado.masInformacion?`
    <details class="product-more">
     <summary>Más información</summary>
-<p>${esc(productoSeleccionado.descripcion||"")}</p>
+    <p>${esc(productoSeleccionado.masInformacion).replace(/\n/g,"<br>")}</p>
    </details>
   `:""}
  `;
+
+ dibujarGaleriaProducto();
+
+ $("formPersonalizar").reset();
+ $("cantidad").value=1;
+ $("previewReferencias").innerHTML="";
+ $("productoOverlay").style.display="block";
+}
 
  dibujarGaleriaProducto();
 
