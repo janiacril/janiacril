@@ -4,418 +4,816 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Administración JANIACRIL</title>
+<title>Administración | JANIACRIL</title>
 <style>
+:root{--green:#287449;--dark:#1d5937;--mint:#eaf3ec;--ink:#26382d;--muted:#718078;--line:#dce7df;--red:#b83b3b}
 *{box-sizing:border-box}
-body{margin:0;padding:20px;font-family:Arial,sans-serif;background:#f2f7f3;color:#26382d}
-main{max-width:850px;margin:20px auto;background:white;padding:24px;border-radius:15px}
-h1,h2{color:#287449}
-input,textarea,select,button{width:100%;padding:12px;margin:7px 0;border-radius:8px;font-size:15px}
-input,textarea,select{border:1px solid #ccd8ce;background:white}
-button{border:0;background:#287449;color:white;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5}
-.sec{background:#68796e}
-.del{background:#b83b3b}
-.card{border:1px solid #dce7df;border-radius:10px;padding:13px;margin:10px 0}
-.card img{width:85px;height:85px;object-fit:cover;border-radius:8px}
-.item{display:flex;align-items:center;gap:12px}
-.item-info{flex:1;min-width:0}
-.small{font-size:13px;color:#64766a}
-.hidden{display:none}
-hr{border:0;border-top:1px solid #e1e9e3;margin:25px 0}
+body{margin:0;background:#f3f7f4;color:var(--ink);font-family:Arial,sans-serif}
+header{background:var(--dark);color:white;padding:22px 18px}
+.header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand img{width:55px;height:48px;object-fit:contain;background:white;border-radius:9px;padding:4px}
+.brand h1{font-size:21px;margin:0}
+.brand p{font-size:13px;margin:5px 0 0;color:#d9e9de}
+main{max-width:1100px;margin:25px auto;padding:0 16px 40px}
+.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #173b2010}
+h2{font-size:20px;color:var(--dark);margin:0 0 16px}
+p{line-height:1.5}
+label{display:block;font-size:14px;font-weight:bold;margin:12px 0 6px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #cbd9ce;border-radius:9px;font-size:15px;background:white;color:var(--ink)}
+textarea{min-height:95px;resize:vertical}
+button{border:0;border-radius:9px;padding:12px 15px;background:var(--green);color:white;font-size:14px;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(.94)}
+button:disabled{opacity:.55;cursor:wait}
+button.secondary{background:#e8f0ea;color:var(--dark)}
+button.danger{background:#fff0ef;color:var(--red)}
+button.dark{background:#52645a}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.actions button{width:auto}
+.hidden{display:none!important}
+.help{font-size:13px;color:var(--muted);margin:6px 0}
+.message{font-size:14px;margin:10px 0;color:var(--dark);white-space:pre-wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.stat{background:var(--mint);padding:17px;border-radius:12px}
+.stat strong{display:block;font-size:25px;color:var(--dark)}
+.stat span{font-size:13px;color:#52645a}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.category,.product{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
+.category-name{font-weight:bold;font-size:15px}
+.product{display:flex;gap:12px;align-items:flex-start}
+.product img{width:82px;height:82px;object-fit:cover;border-radius:9px;background:var(--mint);flex-shrink:0}
+.product-info{min-width:0;flex:1}
+.product-info strong{display:block;margin-bottom:5px}
+.product-info .help{margin:4px 0}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:var(--mint);color:var(--dark);font-size:11px;font-weight:bold;margin-top:4px}
+.badge.off{background:#f1eeee;color:#776b6b}
+.toolbar{display:grid;grid-template-columns:1fr 220px;gap:10px;margin:12px 0 16px}
+.preview{width:125px;height:125px;object-fit:cover;border-radius:10px;border:1px solid var(--line);margin-top:10px}
+.login-wrap{max-width:430px;margin:55px auto}
+.login-wrap .panel{padding:26px}
+.top-actions{display:flex;gap:8px;align-items:center}
+.top-actions button{width:auto}
+.checkline{display:flex;align-items:center;gap:9px;margin:14px 0}
+.checkline input{width:auto}
+.checkline label{margin:0}
+@media(max-width:600px){
+.stats{grid-template-columns:1fr 1fr}
+.toolbar{grid-template-columns:1fr}
+.header-inner{align-items:flex-start}
+.brand h1{font-size:18px}
+.panel{padding:17px}
+.product img{width:70px;height:70px}
+}
 </style>
 </head>
 <body>
-<main>
-<h1>JANIACRIL</h1>
-<p>Panel de administración</p>
 
-<section id="login">
-<h2>Iniciar sesión</h2>
-<input id="correo" type="email" placeholder="Correo electrónico">
-<input id="clave" type="password" placeholder="Contraseña">
-<button id="entrar">Ingresar</button>
-<p id="mensaje"></p>
-</section>
+<header>
+ <div class="header-inner">
+  <div class="brand">
+   <img src="logo-janiacril.png" alt="JANIACRIL" onerror="this.style.display='none'">
+   <div>
+    <h1>JANIACRIL</h1>
+    <p>Panel de administración</p>
+   </div>
+  </div>
+  <div class="top-actions">
+   <button id="salir" class="secondary hidden">Cerrar sesión</button>
+  </div>
+ </div>
+</header>
 
-<section id="panel" class="hidden">
-<button id="salir" class="sec">Cerrar sesión</button>
+<div id="login" class="login-wrap">
+ <section class="panel">
+  <h2>Bienvenido/a</h2>
+  <p class="help">Ingresa con tu cuenta de administración para gestionar el catálogo.</p>
 
-<h2>1. Crear categoría</h2>
-<input id="nuevaCategoria" placeholder="Ej: Pastelería y heladería">
-<button id="crearCategoria">Crear categoría</button>
-<div id="listaCategorias"></div>
+  <label for="correo">Correo electrónico</label>
+  <input id="correo" type="email" placeholder="Tu correo" autocomplete="username">
 
-<hr>
+  <label for="clave">Contraseña</label>
+  <input id="clave" type="password" placeholder="Tu contraseña" autocomplete="current-password">
 
-<h2>2. Crear subcategoría</h2>
-<label>Selecciona la categoría principal:</label>
-<select id="categoriaSub">
-<option value="">Selecciona una categoría</option>
-</select>
-<input id="nuevaSubcategoria" placeholder="Ej: Porta tortas">
-<button id="crearSubcategoria">Crear subcategoría</button>
-<div id="listaSubcategorias"></div>
+  <button id="entrar" style="width:100%;margin-top:15px">Ingresar al panel</button>
+  <p id="mensaje" class="message"></p>
+ </section>
+</div>
 
-<hr>
+<main id="panel" class="hidden">
 
-<h2>3. Agregar producto</h2>
-<input id="nombre" placeholder="Nombre del producto">
-<textarea id="descripcion" placeholder="Descripción del producto"></textarea>
+ <div class="stats">
+  <div class="stat">
+   <strong id="totalProductos">0</strong>
+   <span>Productos registrados</span>
+  </div>
+  <div class="stat">
+   <strong id="totalActivos">0</strong>
+   <span>Productos visibles</span>
+  </div>
+  <div class="stat">
+   <strong id="totalCategorias">0</strong>
+   <span>Categorías</span>
+  </div>
+ </div>
 
-<label>Categoría:</label>
-<select id="categoriaProducto">
-<option value="">Selecciona una categoría</option>
-</select>
+ <section class="panel">
+  <h2>1. Categorías del catálogo</h2>
+  <p class="help">Crea las categorías principales que aparecerán en tu página. Al entrar a una categoría, los clientes verán directamente sus productos.</p>
 
-<label>Subcategoría:</label>
-<select id="subcategoriaProducto">
-<option value="">Primero selecciona una categoría</option>
-</select>
+  <label for="nuevaCategoria">Nombre de la categoría</label>
+  <input id="nuevaCategoria" placeholder="Ej: Pastelería y heladería">
 
-<label>Foto del producto:</label>
-<input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
-<p id="estadoFoto" class="small"></p>
-<img id="preview" class="hidden" style="max-width:150px;border-radius:8px">
+  <div class="actions">
+   <button id="crearCategoria">Crear categoría</button>
+  </div>
 
-<button id="guardarProducto">Guardar producto</button>
-<button id="cancelarEdicion" class="sec hidden">Cancelar edición</button>
-<p id="mensajeProducto"></p>
+  <p id="mensajeCategoria" class="message"></p>
+  <div id="listaCategorias" class="grid"></div>
+ </section>
 
-<hr>
+ <section class="panel" id="formularioProducto">
+  <h2>2. Agregar un producto</h2>
+  <p class="help">Completa los datos y selecciona una categoría principal. No necesitas crear subcategorías.</p>
 
-<h2>4. Productos publicados</h2>
-<div id="listaProductos"></div>
-</section>
+  <label for="nombre">Nombre del producto</label>
+  <input id="nombre" placeholder="Ej: Exhibidor para macarrones">
+
+  <label for="descripcion">Descripción</label>
+  <textarea id="descripcion" placeholder="Describe brevemente el producto, sus características o usos."></textarea>
+
+  <label for="categoriaProducto">Categoría</label>
+  <select id="categoriaProducto">
+   <option value="">Selecciona una categoría</option>
+  </select>
+
+  <label for="foto">Fotografía del producto</label>
+  <input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
+  <p class="help">Formatos JPG, PNG o WEBP. Tamaño máximo: 5 MB.</p>
+
+  <img id="preview" class="preview hidden" alt="Vista previa de la imagen">
+  <p id="estadoFoto" class="help"></p>
+
+  <div class="checkline">
+   <input id="activo" type="checkbox" checked>
+   <label for="activo">Mostrar producto en la página</label>
+  </div>
+
+  <div class="actions">
+   <button id="guardarProducto">Guardar producto</button>
+   <button id="cancelarEdicion" class="secondary hidden">Cancelar edición</button>
+  </div>
+
+  <p id="mensajeProducto" class="message"></p>
+ </section>
+
+ <section class="panel">
+  <h2>3. Productos del catálogo</h2>
+  <p class="help">Puedes buscar, editar, ocultar, volver a publicar o eliminar productos.</p>
+
+  <div class="toolbar">
+   <input id="buscarProducto" placeholder="Buscar por nombre...">
+   <select id="filtroCategoria">
+    <option value="">Todas las categorías</option>
+   </select>
+  </div>
+
+  <div id="listaProductos" class="grid"></div>
+ </section>
+
 </main>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 import {
-getFirestore,collection,addDoc,getDocs,updateDoc,deleteDoc,doc,serverTimestamp
+ getAuth,
+ signInWithEmailAndPassword,
+ onAuthStateChanged,
+ signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+ getFirestore,
+ collection,
+ addDoc,
+ getDocs,
+ updateDoc,
+ deleteDoc,
+ doc,
+ serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig={
-apiKey:"AIzaSyBGDx598ENGfbUADWOXsdmXeS42n1Lf-24",
-authDomain:"janiacril-50a9b.firebaseapp.com",
-projectId:"janiacril-50a9b",
-storageBucket:"janiacril-50a9b.firebasestorage.app",
-messagingSenderId:"213743116298",
-appId:"1:213743116298:web:b3d2055fc470edb55c3ff3",
-measurementId:"G-F5VLPGVRQF"
+ apiKey:"AIzaSyBGDx598ENGfbUADWOXsdmXeS42n1Lf-24",
+ authDomain:"janiacril-50a9b.firebaseapp.com",
+ projectId:"janiacril-50a9b",
+ storageBucket:"janiacril-50a9b.firebasestorage.app",
+ messagingSenderId:"213743116298",
+ appId:"1:213743116298:web:b3d2055fc470edb55c3ff3",
+ measurementId:"G-F5VLPGVRQF"
 };
 
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
+
 const ADMIN_UID="4vCpe7JpzdM6GqP7V1hpcBK530d2";
 const CLOUD_NAME="llxnor52";
 const UPLOAD_PRESET="janiacril_productos";
 
 const $=id=>document.getElementById(id);
+
 let categorias=[];
 let productos=[];
 let imagenActual="";
 let editandoProducto=null;
 
 
-$("entrar").onclick = async () => {
-  $("mensaje").textContent = "Ingresando...";
+// INICIAR SESIÓN
 
-  try {
-    await signInWithEmailAndPassword(
-      auth,
-      $("correo").value.trim(),
-      $("clave").value
-    );
-  } catch (e) {
-    $("mensaje").textContent = "Error: " + e.code + " - " + e.message;
-  }
+$("entrar").onclick=async()=>{
+ $("mensaje").textContent="Ingresando...";
+ $("entrar").disabled=true;
+
+ try{
+  await signInWithEmailAndPassword(
+   auth,
+   $("correo").value.trim(),
+   $("clave").value
+  );
+ }catch(e){
+  $("mensaje").textContent="No se pudo ingresar. Revisa tu correo y contraseña. ("+e.code+")";
+ }finally{
+  $("entrar").disabled=false;
+ }
 };
 
+$("clave").addEventListener("keydown",e=>{
+ if(e.key==="Enter")$("entrar").click();
+});
 
 $("salir").onclick=()=>signOut(auth);
 
+
+// COMPROBAR ADMINISTRADOR
+
 onAuthStateChanged(auth,async user=>{
-if(user && user.uid===ADMIN_UID){
-$("login").classList.add("hidden");
-$("panel").classList.remove("hidden");
-await actualizarTodo();
-}else{
-$("panel").classList.add("hidden");
-$("login").classList.remove("hidden");
-if(user){
-$("mensaje").textContent="Esta cuenta no tiene permiso de administración.";
-await signOut(auth);
-}
-}
+ if(user && user.uid===ADMIN_UID){
+
+  $("login").classList.add("hidden");
+  $("panel").classList.remove("hidden");
+  $("salir").classList.remove("hidden");
+
+  try{
+   await actualizarTodo();
+  }catch(e){
+   alert("No se pudo cargar el panel: "+e.message);
+  }
+
+ }else{
+
+  $("panel").classList.add("hidden");
+  $("salir").classList.add("hidden");
+  $("login").classList.remove("hidden");
+
+  if(user){
+   $("mensaje").textContent="Esta cuenta no tiene permiso de administración.";
+   await signOut(auth);
+  }
+ }
 });
 
+
+// CARGAR INFORMACIÓN
+
 async function actualizarTodo(){
-await cargarCategorias();
-await cargarProductos();
+ await cargarCategorias();
+ await cargarProductos();
 }
 
+
+// CATEGORÍAS
+
 async function cargarCategorias(){
-const snap=await getDocs(collection(db,"categorias"));
-categorias=snap.docs.map(d=>({id:d.id,...d.data()}));
-mostrarCategorias();
+
+ const snap=await getDocs(collection(db,"categorias"));
+
+ // Solo mostramos categorías principales.
+ // Las subcategorías antiguas permanecen guardadas en Firebase.
+
+ categorias=snap.docs
+  .map(d=>({id:d.id,...d.data()}))
+  .filter(c=>!c.parentId);
+
+ mostrarCategorias();
 }
 
 function mostrarCategorias(){
-const principales=categorias.filter(c=>!c.parentId);
-const subs=categorias.filter(c=>c.parentId);
 
-$("listaCategorias").innerHTML="";
-$("categoriaSub").innerHTML='<option value="">Selecciona una categoría</option>';
-$("categoriaProducto").innerHTML='<option value="">Selecciona una categoría</option>';
+ $("listaCategorias").innerHTML="";
+ $("categoriaProducto").innerHTML='<option value="">Selecciona una categoría</option>';
+ $("filtroCategoria").innerHTML='<option value="">Todas las categorías</option>';
 
-principales.forEach(c=>{
-const op1=new Option(c.nombre,c.id);
-const op2=new Option(c.nombre,c.id);
-$("categoriaSub").add(op1);
-$("categoriaProducto").add(op2);
+ $("totalCategorias").textContent=categorias.length;
 
-const div=document.createElement("div");
-div.className="card";
-const titulo=document.createElement("strong");
-titulo.textContent=c.nombre;
-const editar=document.createElement("button");
-editar.className="sec";
-editar.textContent="Cambiar nombre";
-editar.onclick=()=>editarCategoria(c.id,c.nombre);
-const eliminar=document.createElement("button");
-eliminar.className="del";
-eliminar.textContent="Eliminar categoría";
-eliminar.onclick=()=>eliminarCategoria(c.id,c.nombre);
-div.append(titulo,editar,eliminar);
-$("listaCategorias").append(div);
-});
+ categorias.forEach(c=>{
 
-$("listaSubcategorias").innerHTML="";
-subs.forEach(s=>{
-const padre=principales.find(c=>c.id===s.parentId);
-const div=document.createElement("div");
-div.className="card";
-const titulo=document.createElement("strong");
-titulo.textContent=(padre?padre.nombre:"Categoría") + " → " + s.nombre;
-const editar=document.createElement("button");
-editar.className="sec";
-editar.textContent="Cambiar nombre";
-editar.onclick=()=>editarCategoria(s.id,s.nombre);
-const eliminar=document.createElement("button");
-eliminar.className="del";
-eliminar.textContent="Eliminar subcategoría";
-eliminar.onclick=()=>eliminarCategoria(s.id,s.nombre);
-div.append(titulo,editar,eliminar);
-$("listaSubcategorias").append(div);
-});
+  $("categoriaProducto").add(
+   new Option(c.nombre,c.id)
+  );
 
-actualizarSubproductos();
+  $("filtroCategoria").add(
+   new Option(c.nombre,c.id)
+  );
+
+  const card=document.createElement("div");
+  card.className="category";
+
+  const name=document.createElement("div");
+  name.className="category-name";
+  name.textContent=c.nombre;
+
+  const edit=document.createElement("button");
+  edit.className="secondary";
+  edit.textContent="Cambiar nombre";
+  edit.onclick=()=>editarCategoria(c);
+
+  const del=document.createElement("button");
+  del.className="danger";
+  del.textContent="Eliminar";
+  del.onclick=()=>eliminarCategoria(c);
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+  actions.append(edit,del);
+
+  card.append(name,actions);
+  $("listaCategorias").append(card);
+ });
 }
 
-$("categoriaProducto").onchange=actualizarSubproductos;
 
-function actualizarSubproductos(){
-const id=$("categoriaProducto").value;
-$("subcategoriaProducto").innerHTML='<option value="">Sin subcategoría</option>';
-categorias.filter(c=>c.parentId===id).forEach(c=>{
-$("subcategoriaProducto").add(new Option(c.nombre,c.id));
-});
-}
+// CREAR CATEGORÍA
 
 $("crearCategoria").onclick=async()=>{
-const nombre=$("nuevaCategoria").value.trim();
-if(!nombre)return alert("Escribe el nombre de la categoría.");
-try{
-await addDoc(collection(db,"categorias"),{nombre,parentId:null,creado:serverTimestamp()});
-$("nuevaCategoria").value="";
-await cargarCategorias();
-}catch(e){alert("Error al crear: "+e.message);}
+
+ const nombre=$("nuevaCategoria").value.trim();
+
+ if(!nombre)return alert("Escribe el nombre de la categoría.");
+
+ if(categorias.some(c=>c.nombre.toLowerCase()===nombre.toLowerCase())){
+  return alert("Ya existe una categoría con ese nombre.");
+ }
+
+ $("crearCategoria").disabled=true;
+
+ try{
+
+  await addDoc(collection(db,"categorias"),{
+   nombre,
+   parentId:null,
+   creado:serverTimestamp()
+  });
+
+  $("nuevaCategoria").value="";
+  $("mensajeCategoria").textContent="Categoría creada correctamente.";
+
+  await cargarCategorias();
+
+ }catch(e){
+
+  $("mensajeCategoria").textContent="Error al crear la categoría: "+e.message;
+
+ }finally{
+
+  $("crearCategoria").disabled=false;
+
+ }
 };
 
-$("crearSubcategoria").onclick=async()=>{
-const parentId=$("categoriaSub").value;
-const nombre=$("nuevaSubcategoria").value.trim();
-if(!parentId)return alert("Selecciona una categoría principal.");
-if(!nombre)return alert("Escribe el nombre de la subcategoría.");
-try{
-await addDoc(collection(db,"categorias"),{nombre,parentId,creado:serverTimestamp()});
-$("nuevaSubcategoria").value="";
-await cargarCategorias();
-}catch(e){alert("Error al crear: "+e.message);}
-};
 
-async function editarCategoria(id,nombreActual){
-const nuevo=prompt("Escribe el nuevo nombre:",nombreActual);
-if(!nuevo || !nuevo.trim())return;
-try{
-await updateDoc(doc(db,"categorias",id),{nombre:nuevo.trim()});
-await cargarCategorias();
-}catch(e){alert("Error al cambiar: "+e.message);}
+// EDITAR CATEGORÍA
+
+async function editarCategoria(c){
+
+ const nuevo=prompt("Escribe el nuevo nombre de la categoría:",c.nombre);
+
+ if(!nuevo || !nuevo.trim())return;
+
+ const nombre=nuevo.trim();
+
+ if(categorias.some(x=>x.id!==c.id && x.nombre.toLowerCase()===nombre.toLowerCase())){
+  return alert("Ya existe una categoría con ese nombre.");
+ }
+
+ try{
+
+  await updateDoc(doc(db,"categorias",c.id),{nombre});
+
+  const relacionados=productos.filter(p=>p.categoriaId===c.id);
+
+  for(const p of relacionados){
+   await updateDoc(doc(db,"productos",p.id),{categoria:nombre});
+  }
+
+  await actualizarTodo();
+
+ }catch(e){
+
+  alert("No se pudo cambiar el nombre: "+e.message);
+
+ }
 }
 
-async function eliminarCategoria(id,nombre){
-if(!confirm("¿Eliminar "+nombre+"? Los productos relacionados no se borrarán, pero podrían quedar sin categoría."))return;
-try{
-const tieneHijas=categorias.some(c=>c.parentId===id);
-if(tieneHijas){
-alert("Primero elimina las subcategorías de esta categoría.");
-return;
+
+// ELIMINAR CATEGORÍA
+
+async function eliminarCategoria(c){
+
+ const relacionados=productos.filter(p=>
+  p.categoriaId===c.id || p.categoria===c.nombre
+ );
+
+ if(relacionados.length){
+  return alert(
+   "No se puede eliminar porque hay "+relacionados.length+
+   " producto(s) asociados. Primero cambia esos productos a otra categoría o elimínalos."
+  );
+ }
+
+ if(!confirm('¿Eliminar la categoría "'+c.nombre+'"?'))return;
+
+ try{
+
+  await deleteDoc(doc(db,"categorias",c.id));
+  await cargarCategorias();
+
+ }catch(e){
+
+  alert("No se pudo eliminar: "+e.message);
+
+ }
 }
-await deleteDoc(doc(db,"categorias",id));
-await cargarCategorias();
-}catch(e){alert("Error al eliminar: "+e.message);}
-}
+
+
+// FOTOGRAFÍAS
 
 $("foto").onchange=()=>{
-const archivo=$("foto").files[0];
-if(!archivo)return;
-if(archivo.size>5*1024*1024){
-alert("La imagen debe pesar menos de 5 MB.");
-$("foto").value="";
-return;
-}
-$("preview").src=URL.createObjectURL(archivo);
-$("preview").classList.remove("hidden");
-$("estadoFoto").textContent="Imagen seleccionada.";
+
+ const archivo=$("foto").files[0];
+
+ if(!archivo)return;
+
+ if(archivo.size>5*1024*1024){
+  alert("La imagen debe pesar menos de 5 MB.");
+  $("foto").value="";
+  return;
+ }
+
+ if(!["image/jpeg","image/png","image/webp"].includes(archivo.type)){
+  alert("Usa una imagen JPG, PNG o WEBP.");
+  $("foto").value="";
+  return;
+ }
+
+ $("preview").src=URL.createObjectURL(archivo);
+ $("preview").classList.remove("hidden");
+ $("estadoFoto").textContent="Fotografía seleccionada.";
+
 };
+
 
 async function subirFoto(archivo){
-const datos=new FormData();
-datos.append("file",archivo);
-datos.append("upload_preset",UPLOAD_PRESET);
-const respuesta=await fetch(
-`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-{method:"POST",body:datos}
-);
-const resultado=await respuesta.json();
-if(!respuesta.ok)throw new Error(resultado.error?.message||"Error al subir imagen.");
-return resultado.secure_url;
+
+ const datos=new FormData();
+
+ datos.append("file",archivo);
+ datos.append("upload_preset",UPLOAD_PRESET);
+
+ const respuesta=await fetch(
+  "https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",
+  {
+   method:"POST",
+   body:datos
+  }
+ );
+
+ const resultado=await respuesta.json();
+
+ if(!respuesta.ok){
+  throw new Error(resultado.error?.message||"Error al subir la imagen.");
+ }
+
+ return resultado.secure_url;
 }
+
+
+// GUARDAR PRODUCTO
 
 $("guardarProducto").onclick=async()=>{
-const nombre=$("nombre").value.trim();
-const descripcion=$("descripcion").value.trim();
-const categoriaId=$("categoriaProducto").value;
-const subcategoriaId=$("subcategoriaProducto").value;
-const categoria=categorias.find(c=>c.id===categoriaId);
-const subcategoria=categorias.find(c=>c.id===subcategoriaId);
-const archivo=$("foto").files[0];
 
-if(!nombre)return alert("Escribe el nombre del producto.");
-if(!categoria)return alert("Selecciona una categoría.");
+ const nombre=$("nombre").value.trim();
+ const descripcion=$("descripcion").value.trim();
+ const categoriaId=$("categoriaProducto").value;
+ const categoria=categorias.find(c=>c.id===categoriaId);
+ const archivo=$("foto").files[0];
 
-$("guardarProducto").disabled=true;
-$("mensajeProducto").textContent="Guardando...";
+ if(!nombre)return alert("Escribe el nombre del producto.");
+ if(!categoria)return alert("Selecciona una categoría.");
 
-try{
-if(archivo)imagenActual=await subirFoto(archivo);
-if(!imagenActual)throw new Error("Selecciona una foto del producto.");
+ if(!editandoProducto && !archivo){
+  return alert("Selecciona una fotografía del producto.");
+ }
 
-const datos={
-nombre,descripcion,
-categoriaId,
-categoria:categoria.nombre,
-subcategoriaId:subcategoriaId||"",
-subcategoria:subcategoria?subcategoria.nombre:"",
-imagen:imagenActual,
-activo:true
+ $("guardarProducto").disabled=true;
+ $("mensajeProducto").textContent="Guardando producto...";
+
+ try{
+
+  if(archivo){
+   imagenActual=await subirFoto(archivo);
+  }
+
+  const datos={
+   nombre,
+   descripcion,
+   categoriaId,
+   categoria:categoria.nombre,
+   subcategoriaId:"",
+   subcategoria:"",
+   imagen:imagenActual,
+   activo:$("activo").checked
+  };
+
+  if(editandoProducto){
+
+   await updateDoc(
+    doc(db,"productos",editandoProducto),
+    datos
+   );
+
+  }else{
+
+   datos.creado=serverTimestamp();
+
+   await addDoc(
+    collection(db,"productos"),
+    datos
+   );
+
+  }
+
+  $("mensajeProducto").textContent="¡Producto guardado correctamente!";
+
+  limpiarProducto();
+  await cargarProductos();
+
+ }catch(e){
+
+  $("mensajeProducto").textContent="No se pudo guardar: "+e.message;
+
+ }finally{
+
+  $("guardarProducto").disabled=false;
+
+ }
 };
 
-if(editandoProducto){
-await updateDoc(doc(db,"productos",editandoProducto),datos);
-}else{
-datos.creado=serverTimestamp();
-await addDoc(collection(db,"productos"),datos);
-}
 
-$("mensajeProducto").textContent="¡Producto guardado!";
-limpiarProducto();
-await cargarProductos();
-}catch(e){
-$("mensajeProducto").textContent="Error: "+e.message;
-}finally{
-$("guardarProducto").disabled=false;
-}
-};
+// LIMPIAR FORMULARIO
 
 function limpiarProducto(){
-$("nombre").value="";
-$("descripcion").value="";
-$("categoriaProducto").value="";
-actualizarSubproductos();
-$("foto").value="";
-$("preview").classList.add("hidden");
-$("estadoFoto").textContent="";
-imagenActual="";
-editandoProducto=null;
-$("guardarProducto").textContent="Guardar producto";
-$("cancelarEdicion").classList.add("hidden");
+
+ $("nombre").value="";
+ $("descripcion").value="";
+ $("categoriaProducto").value="";
+ $("foto").value="";
+
+ $("preview").classList.add("hidden");
+ $("preview").removeAttribute("src");
+
+ $("estadoFoto").textContent="";
+ $("activo").checked=true;
+
+ imagenActual="";
+ editandoProducto=null;
+
+ $("guardarProducto").textContent="Guardar producto";
+ $("cancelarEdicion").classList.add("hidden");
 }
 
-$("cancelarEdicion").onclick=limpiarProducto;
+$("cancelarEdicion").onclick=()=>{
+ limpiarProducto();
+ $("mensajeProducto").textContent="Edición cancelada.";
+};
+
+
+// BUSCAR Y FILTRAR PRODUCTOS
+
+$("buscarProducto").oninput=mostrarProductos;
+$("filtroCategoria").onchange=mostrarProductos;
+
+
+// CARGAR PRODUCTOS
 
 async function cargarProductos(){
-const snap=await getDocs(collection(db,"productos"));
-productos=snap.docs.map(d=>({id:d.id,...d.data()}));
-$("listaProductos").innerHTML="";
-if(!productos.length){
-$("listaProductos").textContent="Todavía no hay productos.";
-return;
+
+ const snap=await getDocs(collection(db,"productos"));
+
+ productos=snap.docs.map(d=>({
+  id:d.id,
+  ...d.data()
+ }));
+
+ $("totalProductos").textContent=productos.length;
+
+ $("totalActivos").textContent=
+  productos.filter(p=>p.activo!==false).length;
+
+ mostrarProductos();
 }
 
-productos.forEach(p=>{
-const div=document.createElement("div");
-div.className="card item";
-const img=document.createElement("img");
-img.src=p.imagen||"";
-const info=document.createElement("div");
-info.className="item-info";
-const nombre=document.createElement("strong");
-nombre.textContent=p.nombre||"Producto";
-const detalle=document.createElement("p");
-detalle.className="small";
-detalle.textContent=(p.categoria||"Sin categoría")+
-(p.subcategoria?" → "+p.subcategoria:"");
-const editar=document.createElement("button");
-editar.className="sec";
-editar.textContent="Editar";
-editar.onclick=()=>editarProducto(p);
-const borrar=document.createElement("button");
-borrar.className="del";
-borrar.textContent="Eliminar";
-borrar.onclick=async()=>{
-if(!confirm("¿Eliminar este producto?"))return;
-try{
-await deleteDoc(doc(db,"productos",p.id));
-await cargarProductos();
-}catch(e){alert("No se pudo eliminar: "+e.message);}
-};
-info.append(nombre,detalle,editar,borrar);
-div.append(img,info);
-$("listaProductos").append(div);
-});
+
+// MOSTRAR PRODUCTOS
+
+function mostrarProductos(){
+
+ const termino=$("buscarProducto").value.trim().toLowerCase();
+ const filtro=$("filtroCategoria").value;
+
+ const lista=productos.filter(p=>{
+
+  const coincideNombre=
+   (p.nombre||"").toLowerCase().includes(termino);
+
+  const coincideCategoria=
+   !filtro ||
+   p.categoriaId===filtro ||
+   (!p.categoriaId && categorias.some(c=>
+    c.id===filtro && c.nombre===p.categoria
+   ));
+
+  return coincideNombre && coincideCategoria;
+
+ });
+
+ $("listaProductos").innerHTML="";
+
+ if(!lista.length){
+  $("listaProductos").textContent="No se encontraron productos.";
+  return;
+ }
+
+ lista.forEach(p=>{
+
+  const card=document.createElement("div");
+  card.className="product";
+
+  const img=document.createElement("img");
+  img.src=p.imagen||"";
+  img.alt=p.nombre||"Producto";
+
+  const info=document.createElement("div");
+  info.className="product-info";
+
+  const name=document.createElement("strong");
+  name.textContent=p.nombre||"Producto sin nombre";
+
+  const cat=document.createElement("p");
+  cat.className="help";
+  cat.textContent=p.categoria||"Sin categoría";
+
+  const status=document.createElement("span");
+  status.className="badge"+(p.activo===false?" off":"");
+  status.textContent=p.activo===false?"Oculto en la página":"Publicado";
+
+  const edit=document.createElement("button");
+  edit.className="secondary";
+  edit.textContent="Editar";
+  edit.onclick=()=>editarProducto(p);
+
+  const toggle=document.createElement("button");
+  toggle.className="dark";
+  toggle.textContent=p.activo===false?"Volver a publicar":"Ocultar";
+  toggle.onclick=()=>cambiarEstado(p);
+
+  const del=document.createElement("button");
+  del.className="danger";
+  del.textContent="Eliminar";
+  del.onclick=()=>eliminarProducto(p);
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+  actions.append(edit,toggle,del);
+
+  info.append(name,cat,status,actions);
+  card.append(img,info);
+
+  $("listaProductos").append(card);
+
+ });
 }
+
+
+// EDITAR PRODUCTO
 
 function editarProducto(p){
-editandoProducto=p.id;
-$("nombre").value=p.nombre||"";
-$("descripcion").value=p.descripcion||"";
-$("categoriaProducto").value=p.categoriaId||"";
-actualizarSubproductos();
-$("subcategoriaProducto").value=p.subcategoriaId||"";
-imagenActual=p.imagen||"";
-if(imagenActual){
-$("preview").src=imagenActual;
-$("preview").classList.remove("hidden");
+
+ editandoProducto=p.id;
+
+ $("nombre").value=p.nombre||"";
+ $("descripcion").value=p.descripcion||"";
+
+ let categoriaId=p.categoriaId||"";
+
+ // Compatibilidad con productos antiguos que guardaban
+ // el nombre de la categoría en vez de su identificador.
+
+ if(!categoriaId && p.categoria){
+
+  const encontrada=categorias.find(c=>
+   c.nombre===p.categoria
+  );
+
+  if(encontrada){
+   categoriaId=encontrada.id;
+  }
+
+ }
+
+ $("categoriaProducto").value=categoriaId;
+
+ imagenActual=p.imagen||"";
+
+ if(imagenActual){
+
+  $("preview").src=imagenActual;
+  $("preview").classList.remove("hidden");
+
+ }else{
+
+  $("preview").classList.add("hidden");
+
+ }
+
+ $("activo").checked=p.activo!==false;
+
+ $("guardarProducto").textContent="Actualizar producto";
+ $("cancelarEdicion").classList.remove("hidden");
+
+ $("mensajeProducto").textContent="Editando: "+(p.nombre||"producto");
+
+ $("formularioProducto").scrollIntoView({
+  behavior:"smooth",
+  block:"start"
+ });
+
 }
-$("guardarProducto").textContent="Actualizar producto";
-$("cancelarEdicion").classList.remove("hidden");
-window.scrollTo({top:0,behavior:"smooth"});
+
+
+// OCULTAR O PUBLICAR PRODUCTO
+
+async function cambiarEstado(p){
+
+ try{
+
+  await updateDoc(
+   doc(db,"productos",p.id),
+   {activo:p.activo===false}
+  );
+
+  await cargarProductos();
+
+ }catch(e){
+
+  alert("No se pudo cambiar el estado: "+e.message);
+
+ }
+
 }
+
+
+// ELIMINAR PRODUCTO
+
+async function eliminarProducto(p){
+
+ if(!confirm('¿Eliminar definitivamente "'+(p.nombre||"este producto")+'"?')){
+  return;
+ }
+
+ try{
+
+  await deleteDoc(doc(db,"productos",p.id));
+  await cargarProductos();
+
+ }catch(e){
+
+  alert("No se pudo eliminar: "+e.message);
+
+ }
+
+}
+
 </script>
 </body>
 </html>
