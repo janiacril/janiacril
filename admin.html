@@ -55,31 +55,24 @@ button.dark{background:#52645a}
 .top-actions button{width:auto}
 .checkline{display:flex;align-items:center;gap:9px;margin:14px 0}
 .checkline input{width:auto}
-.checkline label{margin:0}
 @media(max-width:600px){
-.stats{grid-template-columns:1fr 1fr}
-.toolbar{grid-template-columns:1fr}
-.header-inner{align-items:flex-start}
-.brand h1{font-size:18px}
-.panel{padding:17px}
-.product img{width:70px;height:70px}
+ .stats{grid-template-columns:1fr 1fr}
+ .toolbar{grid-template-columns:1fr}
+ .header-inner{align-items:flex-start}
+ .brand h1{font-size:18px}
+ .panel{padding:17px}
+ .product img{width:70px;height:70px}
 }
 </style>
 </head>
 <body>
-
 <header>
  <div class="header-inner">
   <div class="brand">
    <img src="logo-janiacril.png" alt="JANIACRIL" onerror="this.style.display='none'">
-   <div>
-    <h1>JANIACRIL</h1>
-    <p>Panel de administración</p>
-   </div>
+   <div><h1>JANIACRIL</h1><p>Panel de administración</p></div>
   </div>
-  <div class="top-actions">
-   <button id="salir" class="secondary hidden">Cerrar sesión</button>
-  </div>
+  <div class="top-actions"><button id="salir" class="secondary hidden">Cerrar sesión</button></div>
  </div>
 </header>
 
@@ -87,121 +80,76 @@ button.dark{background:#52645a}
  <section class="panel">
   <h2>Bienvenido/a</h2>
   <p class="help">Ingresa con tu cuenta de administración para gestionar el catálogo.</p>
-
   <label for="correo">Correo electrónico</label>
   <input id="correo" type="email" placeholder="Tu correo" autocomplete="username">
-
   <label for="clave">Contraseña</label>
   <input id="clave" type="password" placeholder="Tu contraseña" autocomplete="current-password">
-
   <button id="entrar" style="width:100%;margin-top:15px">Ingresar al panel</button>
   <p id="mensaje" class="message"></p>
  </section>
 </div>
 
 <main id="panel" class="hidden">
-
  <div class="stats">
-  <div class="stat">
-   <strong id="totalProductos">0</strong>
-   <span>Productos registrados</span>
-  </div>
-  <div class="stat">
-   <strong id="totalActivos">0</strong>
-   <span>Productos visibles</span>
-  </div>
-  <div class="stat">
-   <strong id="totalCategorias">0</strong>
-   <span>Categorías</span>
-  </div>
+  <div class="stat"><strong id="totalProductos">0</strong><span>Productos registrados</span></div>
+  <div class="stat"><strong id="totalActivos">0</strong><span>Productos visibles</span></div>
+  <div class="stat"><strong id="totalCategorias">0</strong><span>Categorías</span></div>
  </div>
 
  <section class="panel">
   <h2>1. Categorías del catálogo</h2>
-  <p class="help">Crea las categorías principales que aparecerán en tu página. Al entrar a una categoría, los clientes verán directamente sus productos.</p>
-
+  <p class="help">Crea categorías principales y asígnales una fotografía de portada. Al entrar a cada categoría, los clientes verán sus productos.</p>
   <label for="nuevaCategoria">Nombre de la categoría</label>
-  <input id="nuevaCategoria" placeholder="Ej: Pastelería y heladería">
-
-  <div class="actions">
-   <button id="crearCategoria">Crear categoría</button>
-  </div>
-
+  <input id="nuevaCategoria" placeholder="Ej: Repostería y Pastelería">
+  <label for="fotoCategoria">Fotografía de la categoría (opcional)</label>
+  <input id="fotoCategoria" type="file" accept="image/png,image/jpeg,image/webp">
+  <p class="help">Esta será la portada de la categoría. JPG, PNG o WEBP, máximo 5 MB.</p>
+  <img id="previewCategoria" class="preview hidden" alt="Vista previa de categoría">
+  <div class="actions"><button id="crearCategoria">Crear categoría</button></div>
   <p id="mensajeCategoria" class="message"></p>
   <div id="listaCategorias" class="grid"></div>
  </section>
 
  <section class="panel" id="formularioProducto">
   <h2>2. Agregar un producto</h2>
-  <p class="help">Completa los datos y selecciona una categoría principal. No necesitas crear subcategorías.</p>
-
+  <p class="help">Cada producto tiene su propia fotografía, independiente de la imagen de su categoría.</p>
   <label for="nombre">Nombre del producto</label>
   <input id="nombre" placeholder="Ej: Exhibidor para macarrones">
-
   <label for="descripcion">Descripción</label>
   <textarea id="descripcion" placeholder="Describe brevemente el producto, sus características o usos."></textarea>
-
   <label for="categoriaProducto">Categoría</label>
-  <select id="categoriaProducto">
-   <option value="">Selecciona una categoría</option>
-  </select>
-
+  <select id="categoriaProducto"><option value="">Selecciona una categoría</option></select>
   <label for="foto">Fotografía del producto</label>
   <input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
   <p class="help">Formatos JPG, PNG o WEBP. Tamaño máximo: 5 MB.</p>
-
   <img id="preview" class="preview hidden" alt="Vista previa de la imagen">
   <p id="estadoFoto" class="help"></p>
-
   <div class="checkline">
    <input id="activo" type="checkbox" checked>
    <label for="activo">Mostrar producto en la página</label>
   </div>
-
   <div class="actions">
    <button id="guardarProducto">Guardar producto</button>
    <button id="cancelarEdicion" class="secondary hidden">Cancelar edición</button>
   </div>
-
   <p id="mensajeProducto" class="message"></p>
  </section>
 
  <section class="panel">
   <h2>3. Productos del catálogo</h2>
   <p class="help">Puedes buscar, editar, ocultar, volver a publicar o eliminar productos.</p>
-
   <div class="toolbar">
    <input id="buscarProducto" placeholder="Buscar por nombre...">
-   <select id="filtroCategoria">
-    <option value="">Todas las categorías</option>
-   </select>
+   <select id="filtroCategoria"><option value="">Todas las categorías</option></select>
   </div>
-
   <div id="listaProductos" class="grid"></div>
  </section>
-
 </main>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
- getAuth,
- signInWithEmailAndPassword,
- onAuthStateChanged,
- signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
- getFirestore,
- collection,
- addDoc,
- getDocs,
- updateDoc,
- deleteDoc,
- doc,
- serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,collection,addDoc,getDocs,updateDoc,deleteDoc,doc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyBGDx598ENGfbUADWOXsdmXeS42n1Lf-24",
@@ -212,70 +160,40 @@ const firebaseConfig={
  appId:"1:213743116298:web:b3d2055fc470edb55c3ff3",
  measurementId:"G-F5VLPGVRQF"
 };
-
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
-
 const ADMIN_UID="4vCpe7JpzdM6GqP7V1hpcBK530d2";
 const CLOUD_NAME="llxnor52";
 const UPLOAD_PRESET="janiacril_productos";
-
 const $=id=>document.getElementById(id);
+let categorias=[],productos=[],imagenActual="",editandoProducto=null;
 
-let categorias=[];
-let productos=[];
-let imagenActual="";
-let editandoProducto=null;
-
-
-// INICIAR SESIÓN
-
+/* INICIAR SESIÓN */
 $("entrar").onclick=async()=>{
  $("mensaje").textContent="Ingresando...";
  $("entrar").disabled=true;
-
  try{
-  await signInWithEmailAndPassword(
-   auth,
-   $("correo").value.trim(),
-   $("clave").value
-  );
+  await signInWithEmailAndPassword(auth,$("correo").value.trim(),$("clave").value);
  }catch(e){
   $("mensaje").textContent="No se pudo ingresar. Revisa tu correo y contraseña. ("+e.code+")";
- }finally{
-  $("entrar").disabled=false;
- }
+ }finally{$("entrar").disabled=false;}
 };
-
-$("clave").addEventListener("keydown",e=>{
- if(e.key==="Enter")$("entrar").click();
-});
-
+$("clave").addEventListener("keydown",e=>{if(e.key==="Enter")$("entrar").click();});
 $("salir").onclick=()=>signOut(auth);
 
-
-// COMPROBAR ADMINISTRADOR
-
+/* COMPROBAR ADMINISTRADOR */
 onAuthStateChanged(auth,async user=>{
- if(user && user.uid===ADMIN_UID){
-
+ if(user&&user.uid===ADMIN_UID){
   $("login").classList.add("hidden");
   $("panel").classList.remove("hidden");
   $("salir").classList.remove("hidden");
-
-  try{
-   await actualizarTodo();
-  }catch(e){
-   alert("No se pudo cargar el panel: "+e.message);
-  }
-
+  try{await actualizarTodo();}
+  catch(e){alert("No se pudo cargar el panel: "+e.message);}
  }else{
-
   $("panel").classList.add("hidden");
   $("salir").classList.add("hidden");
   $("login").classList.remove("hidden");
-
   if(user){
    $("mensaje").textContent="Esta cuenta no tiene permiso de administración.";
    await signOut(auth);
@@ -283,537 +201,284 @@ onAuthStateChanged(auth,async user=>{
  }
 });
 
+async function actualizarTodo(){await cargarCategorias();await cargarProductos();}
 
-// CARGAR INFORMACIÓN
-
-async function actualizarTodo(){
- await cargarCategorias();
- await cargarProductos();
+/* FUNCIONES DE IMÁGENES */
+function validarImagen(archivo){
+ if(archivo.size>5*1024*1024)throw new Error("La imagen debe pesar menos de 5 MB.");
+ if(!["image/jpeg","image/png","image/webp"].includes(archivo.type))throw new Error("Usa una imagen JPG, PNG o WEBP.");
+}
+async function subirFoto(archivo){
+ const datos=new FormData();
+ datos.append("file",archivo);
+ datos.append("upload_preset",UPLOAD_PRESET);
+ const respuesta=await fetch("https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",{method:"POST",body:datos});
+ const resultado=await respuesta.json();
+ if(!respuesta.ok)throw new Error(resultado.error?.message||"Error al subir la imagen.");
+ return resultado.secure_url;
 }
 
-
-// CATEGORÍAS
-
+/* CATEGORÍAS */
 async function cargarCategorias(){
-
  const snap=await getDocs(collection(db,"categorias"));
-
- // Solo mostramos categorías principales.
- // Las subcategorías antiguas permanecen guardadas en Firebase.
-
- categorias=snap.docs
-  .map(d=>({id:d.id,...d.data()}))
-  .filter(c=>!c.parentId);
-
+ categorias=snap.docs.map(d=>({id:d.id,...d.data()})).filter(c=>!c.parentId);
  mostrarCategorias();
 }
-
 function mostrarCategorias(){
-
  $("listaCategorias").innerHTML="";
  $("categoriaProducto").innerHTML='<option value="">Selecciona una categoría</option>';
  $("filtroCategoria").innerHTML='<option value="">Todas las categorías</option>';
-
  $("totalCategorias").textContent=categorias.length;
 
  categorias.forEach(c=>{
-
-  $("categoriaProducto").add(
-   new Option(c.nombre,c.id)
-  );
-
-  $("filtroCategoria").add(
-   new Option(c.nombre,c.id)
-  );
-
+  $("categoriaProducto").add(new Option(c.nombre,c.id));
+  $("filtroCategoria").add(new Option(c.nombre,c.id));
   const card=document.createElement("div");
   card.className="category";
 
+  if(c.imagen){
+   const photo=document.createElement("img");
+   photo.src=c.imagen;photo.alt=c.nombre;
+   photo.style.cssText="width:100%;height:135px;object-fit:cover;border-radius:9px;margin-bottom:9px";
+   card.append(photo);
+  }
+
   const name=document.createElement("div");
-  name.className="category-name";
-  name.textContent=c.nombre;
+  name.className="category-name";name.textContent=c.nombre;
 
   const edit=document.createElement("button");
-  edit.className="secondary";
-  edit.textContent="Cambiar nombre";
+  edit.className="secondary";edit.textContent="Cambiar nombre";
   edit.onclick=()=>editarCategoria(c);
 
+  const changePhoto=document.createElement("button");
+  changePhoto.className="secondary";changePhoto.textContent="Cambiar fotografía";
+  changePhoto.onclick=()=>seleccionarNuevaFotoCategoria(c);
+
   const del=document.createElement("button");
-  del.className="danger";
-  del.textContent="Eliminar";
+  del.className="danger";del.textContent="Eliminar";
   del.onclick=()=>eliminarCategoria(c);
 
   const actions=document.createElement("div");
-  actions.className="actions";
-  actions.append(edit,del);
-
+  actions.className="actions";actions.append(edit,changePhoto,del);
   card.append(name,actions);
   $("listaCategorias").append(card);
  });
 }
 
-
-// CREAR CATEGORÍA
-
-$("crearCategoria").onclick=async()=>{
-
- const nombre=$("nuevaCategoria").value.trim();
-
- if(!nombre)return alert("Escribe el nombre de la categoría.");
-
- if(categorias.some(c=>c.nombre.toLowerCase()===nombre.toLowerCase())){
-  return alert("Ya existe una categoría con ese nombre.");
- }
-
- $("crearCategoria").disabled=true;
-
- try{
-
-  await addDoc(collection(db,"categorias"),{
-   nombre,
-   parentId:null,
-   creado:serverTimestamp()
-  });
-
-  $("nuevaCategoria").value="";
-  $("mensajeCategoria").textContent="Categoría creada correctamente.";
-
-  await cargarCategorias();
-
- }catch(e){
-
-  $("mensajeCategoria").textContent="Error al crear la categoría: "+e.message;
-
- }finally{
-
-  $("crearCategoria").disabled=false;
-
- }
+/* VISTA PREVIA DE FOTO DE CATEGORÍA */
+$("fotoCategoria").onchange=()=>{
+ const archivo=$("fotoCategoria").files[0];
+ if(!archivo)return;
+ try{validarImagen(archivo);}
+ catch(e){alert(e.message);$("fotoCategoria").value="";return;}
+ $("previewCategoria").src=URL.createObjectURL(archivo);
+ $("previewCategoria").classList.remove("hidden");
 };
 
-
-// EDITAR CATEGORÍA
-
-async function editarCategoria(c){
-
- const nuevo=prompt("Escribe el nuevo nombre de la categoría:",c.nombre);
-
- if(!nuevo || !nuevo.trim())return;
-
- const nombre=nuevo.trim();
-
- if(categorias.some(x=>x.id!==c.id && x.nombre.toLowerCase()===nombre.toLowerCase())){
-  return alert("Ya existe una categoría con ese nombre.");
- }
-
- try{
-
-  await updateDoc(doc(db,"categorias",c.id),{nombre});
-
-  const relacionados=productos.filter(p=>p.categoriaId===c.id);
-
-  for(const p of relacionados){
-   await updateDoc(doc(db,"productos",p.id),{categoria:nombre});
-  }
-
-  await actualizarTodo();
-
- }catch(e){
-
-  alert("No se pudo cambiar el nombre: "+e.message);
-
- }
+/* CAMBIAR FOTO DE UNA CATEGORÍA EXISTENTE */
+async function seleccionarNuevaFotoCategoria(c){
+ const selector=document.createElement("input");
+ selector.type="file";selector.accept="image/png,image/jpeg,image/webp";
+ selector.onchange=async()=>{
+  const archivo=selector.files[0];if(!archivo)return;
+  try{
+   validarImagen(archivo);
+   const url=await subirFoto(archivo);
+   await updateDoc(doc(db,"categorias",c.id),{imagen:url});
+   await cargarCategorias();
+   $("mensajeCategoria").textContent='Fotografía actualizada para "'+c.nombre+'".';
+  }catch(e){alert("No se pudo actualizar la fotografía: "+e.message);}
+ };
+ selector.click();
 }
 
-
-// ELIMINAR CATEGORÍA
-
-async function eliminarCategoria(c){
-
- const relacionados=productos.filter(p=>
-  p.categoriaId===c.id || p.categoria===c.nombre
- );
-
- if(relacionados.length){
-  return alert(
-   "No se puede eliminar porque hay "+relacionados.length+
-   " producto(s) asociados. Primero cambia esos productos a otra categoría o elimínalos."
-  );
- }
-
- if(!confirm('¿Eliminar la categoría "'+c.nombre+'"?'))return;
-
+/* CREAR CATEGORÍA */
+$("crearCategoria").onclick=async()=>{
+ const nombre=$("nuevaCategoria").value.trim();
+ if(!nombre)return alert("Escribe el nombre de la categoría.");
+ if(categorias.some(c=>c.nombre.toLowerCase()===nombre.toLowerCase()))return alert("Ya existe una categoría con ese nombre.");
+ $("crearCategoria").disabled=true;
  try{
+  let imagen="";
+  const archivo=$("fotoCategoria").files[0];
+  if(archivo){validarImagen(archivo);imagen=await subirFoto(archivo);}
+  await addDoc(collection(db,"categorias"),{nombre,imagen,parentId:null,creado:serverTimestamp()});
+  $("nuevaCategoria").value="";
+  $("fotoCategoria").value="";
+  $("previewCategoria").classList.add("hidden");
+  $("previewCategoria").removeAttribute("src");
+  $("mensajeCategoria").textContent="Categoría creada correctamente.";
+  await cargarCategorias();
+ }catch(e){
+  $("mensajeCategoria").textContent="Error al crear la categoría: "+e.message;
+ }finally{$("crearCategoria").disabled=false;}
+};
 
+/* EDITAR NOMBRE DE CATEGORÍA */
+async function editarCategoria(c){
+ const nuevo=prompt("Escribe el nuevo nombre de la categoría:",c.nombre);
+ if(!nuevo||!nuevo.trim())return;
+ const nombre=nuevo.trim();
+ if(categorias.some(x=>x.id!==c.id&&x.nombre.toLowerCase()===nombre.toLowerCase()))return alert("Ya existe una categoría con ese nombre.");
+ try{
+  await updateDoc(doc(db,"categorias",c.id),{nombre});
+  const relacionados=productos.filter(p=>p.categoriaId===c.id);
+  for(const p of relacionados)await updateDoc(doc(db,"productos",p.id),{categoria:nombre});
+  await actualizarTodo();
+ }catch(e){alert("No se pudo cambiar el nombre: "+e.message);}
+}
+
+/* ELIMINAR CATEGORÍA */
+async function eliminarCategoria(c){
+ const relacionados=productos.filter(p=>p.categoriaId===c.id||p.categoria===c.nombre);
+ if(relacionados.length)return alert("No se puede eliminar porque hay "+relacionados.length+" producto(s) asociados. Primero cambia esos productos a otra categoría o elimínalos.");
+ if(!confirm('¿Eliminar la categoría "'+c.nombre+'"?'))return;
+ try{
   await deleteDoc(doc(db,"categorias",c.id));
   await cargarCategorias();
-
- }catch(e){
-
-  alert("No se pudo eliminar: "+e.message);
-
- }
+ }catch(e){alert("No se pudo eliminar: "+e.message);}
 }
 
-
-// FOTOGRAFÍAS
-
+/* FOTO DE PRODUCTO */
 $("foto").onchange=()=>{
-
- const archivo=$("foto").files[0];
-
- if(!archivo)return;
-
- if(archivo.size>5*1024*1024){
-  alert("La imagen debe pesar menos de 5 MB.");
-  $("foto").value="";
-  return;
- }
-
- if(!["image/jpeg","image/png","image/webp"].includes(archivo.type)){
-  alert("Usa una imagen JPG, PNG o WEBP.");
-  $("foto").value="";
-  return;
- }
-
+ const archivo=$("foto").files[0];if(!archivo)return;
+ try{validarImagen(archivo);}
+ catch(e){alert(e.message);$("foto").value="";return;}
  $("preview").src=URL.createObjectURL(archivo);
  $("preview").classList.remove("hidden");
  $("estadoFoto").textContent="Fotografía seleccionada.";
-
 };
 
-
-async function subirFoto(archivo){
-
- const datos=new FormData();
-
- datos.append("file",archivo);
- datos.append("upload_preset",UPLOAD_PRESET);
-
- const respuesta=await fetch(
-  "https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",
-  {
-   method:"POST",
-   body:datos
-  }
- );
-
- const resultado=await respuesta.json();
-
- if(!respuesta.ok){
-  throw new Error(resultado.error?.message||"Error al subir la imagen.");
- }
-
- return resultado.secure_url;
-}
-
-
-// GUARDAR PRODUCTO
-
+/* GUARDAR PRODUCTO */
 $("guardarProducto").onclick=async()=>{
-
  const nombre=$("nombre").value.trim();
  const descripcion=$("descripcion").value.trim();
  const categoriaId=$("categoriaProducto").value;
  const categoria=categorias.find(c=>c.id===categoriaId);
  const archivo=$("foto").files[0];
-
  if(!nombre)return alert("Escribe el nombre del producto.");
  if(!categoria)return alert("Selecciona una categoría.");
-
- if(!editandoProducto && !archivo){
-  return alert("Selecciona una fotografía del producto.");
- }
+ if(!editandoProducto&&!archivo)return alert("Selecciona una fotografía del producto.");
 
  $("guardarProducto").disabled=true;
  $("mensajeProducto").textContent="Guardando producto...";
-
  try{
-
-  if(archivo){
-   imagenActual=await subirFoto(archivo);
-  }
-
+  if(archivo)imagenActual=await subirFoto(archivo);
   const datos={
-   nombre,
-   descripcion,
-   categoriaId,
-   categoria:categoria.nombre,
-   subcategoriaId:"",
-   subcategoria:"",
-   imagen:imagenActual,
+   nombre,descripcion,categoriaId,categoria:categoria.nombre,
+   subcategoriaId:"",subcategoria:"",imagen:imagenActual,
    activo:$("activo").checked
   };
-
   if(editandoProducto){
-
-   await updateDoc(
-    doc(db,"productos",editandoProducto),
-    datos
-   );
-
+   await updateDoc(doc(db,"productos",editandoProducto),datos);
   }else{
-
    datos.creado=serverTimestamp();
-
-   await addDoc(
-    collection(db,"productos"),
-    datos
-   );
-
+   await addDoc(collection(db,"productos"),datos);
   }
-
   $("mensajeProducto").textContent="¡Producto guardado correctamente!";
-
   limpiarProducto();
   await cargarProductos();
-
  }catch(e){
-
   $("mensajeProducto").textContent="No se pudo guardar: "+e.message;
-
- }finally{
-
-  $("guardarProducto").disabled=false;
-
- }
+ }finally{$("guardarProducto").disabled=false;}
 };
 
-
-// LIMPIAR FORMULARIO
-
+/* LIMPIAR FORMULARIO */
 function limpiarProducto(){
-
- $("nombre").value="";
- $("descripcion").value="";
- $("categoriaProducto").value="";
- $("foto").value="";
-
- $("preview").classList.add("hidden");
- $("preview").removeAttribute("src");
-
- $("estadoFoto").textContent="";
- $("activo").checked=true;
-
- imagenActual="";
- editandoProducto=null;
-
+ $("nombre").value="";$("descripcion").value="";
+ $("categoriaProducto").value="";$("foto").value="";
+ $("preview").classList.add("hidden");$("preview").removeAttribute("src");
+ $("estadoFoto").textContent="";$("activo").checked=true;
+ imagenActual="";editandoProducto=null;
  $("guardarProducto").textContent="Guardar producto";
  $("cancelarEdicion").classList.add("hidden");
 }
-
 $("cancelarEdicion").onclick=()=>{
- limpiarProducto();
- $("mensajeProducto").textContent="Edición cancelada.";
+ limpiarProducto();$("mensajeProducto").textContent="Edición cancelada.";
 };
 
-
-// BUSCAR Y FILTRAR PRODUCTOS
-
+/* BUSCAR Y FILTRAR */
 $("buscarProducto").oninput=mostrarProductos;
 $("filtroCategoria").onchange=mostrarProductos;
 
-
-// CARGAR PRODUCTOS
-
+/* CARGAR PRODUCTOS */
 async function cargarProductos(){
-
  const snap=await getDocs(collection(db,"productos"));
-
- productos=snap.docs.map(d=>({
-  id:d.id,
-  ...d.data()
- }));
-
+ productos=snap.docs.map(d=>({id:d.id,...d.data()}));
  $("totalProductos").textContent=productos.length;
-
- $("totalActivos").textContent=
-  productos.filter(p=>p.activo!==false).length;
-
+ $("totalActivos").textContent=productos.filter(p=>p.activo!==false).length;
  mostrarProductos();
 }
 
-
-// MOSTRAR PRODUCTOS
-
+/* MOSTRAR PRODUCTOS */
 function mostrarProductos(){
-
  const termino=$("buscarProducto").value.trim().toLowerCase();
  const filtro=$("filtroCategoria").value;
-
  const lista=productos.filter(p=>{
-
-  const coincideNombre=
-   (p.nombre||"").toLowerCase().includes(termino);
-
-  const coincideCategoria=
-   !filtro ||
-   p.categoriaId===filtro ||
-   (!p.categoriaId && categorias.some(c=>
-    c.id===filtro && c.nombre===p.categoria
-   ));
-
-  return coincideNombre && coincideCategoria;
-
+  const coincideNombre=(p.nombre||"").toLowerCase().includes(termino);
+  const coincideCategoria=!filtro||p.categoriaId===filtro||(!p.categoriaId&&categorias.some(c=>c.id===filtro&&c.nombre===p.categoria));
+  return coincideNombre&&coincideCategoria;
  });
-
  $("listaProductos").innerHTML="";
-
- if(!lista.length){
-  $("listaProductos").textContent="No se encontraron productos.";
-  return;
- }
+ if(!lista.length){$("listaProductos").textContent="No se encontraron productos.";return;}
 
  lista.forEach(p=>{
-
-  const card=document.createElement("div");
-  card.className="product";
-
-  const img=document.createElement("img");
-  img.src=p.imagen||"";
-  img.alt=p.nombre||"Producto";
-
-  const info=document.createElement("div");
-  info.className="product-info";
-
-  const name=document.createElement("strong");
-  name.textContent=p.nombre||"Producto sin nombre";
-
-  const cat=document.createElement("p");
-  cat.className="help";
-  cat.textContent=p.categoria||"Sin categoría";
-
-  const status=document.createElement("span");
-  status.className="badge"+(p.activo===false?" off":"");
+  const card=document.createElement("div");card.className="product";
+  const img=document.createElement("img");img.src=p.imagen||"";img.alt=p.nombre||"Producto";
+  const info=document.createElement("div");info.className="product-info";
+  const name=document.createElement("strong");name.textContent=p.nombre||"Producto sin nombre";
+  const cat=document.createElement("p");cat.className="help";cat.textContent=p.categoria||"Sin categoría";
+  const status=document.createElement("span");status.className="badge"+(p.activo===false?" off":"");
   status.textContent=p.activo===false?"Oculto en la página":"Publicado";
 
-  const edit=document.createElement("button");
-  edit.className="secondary";
-  edit.textContent="Editar";
-  edit.onclick=()=>editarProducto(p);
-
-  const toggle=document.createElement("button");
-  toggle.className="dark";
-  toggle.textContent=p.activo===false?"Volver a publicar":"Ocultar";
-  toggle.onclick=()=>cambiarEstado(p);
-
-  const del=document.createElement("button");
-  del.className="danger";
-  del.textContent="Eliminar";
-  del.onclick=()=>eliminarProducto(p);
-
-  const actions=document.createElement("div");
-  actions.className="actions";
-  actions.append(edit,toggle,del);
-
-  info.append(name,cat,status,actions);
-  card.append(img,info);
-
+  const edit=document.createElement("button");edit.className="secondary";edit.textContent="Editar";edit.onclick=()=>editarProducto(p);
+  const toggle=document.createElement("button");toggle.className="dark";toggle.textContent=p.activo===false?"Volver a publicar":"Ocultar";toggle.onclick=()=>cambiarEstado(p);
+  const del=document.createElement("button");del.className="danger";del.textContent="Eliminar";del.onclick=()=>eliminarProducto(p);
+  const actions=document.createElement("div");actions.className="actions";actions.append(edit,toggle,del);
+  info.append(name,cat,status,actions);card.append(img,info);
   $("listaProductos").append(card);
-
  });
 }
 
-
-// EDITAR PRODUCTO
-
+/* EDITAR PRODUCTO */
 function editarProducto(p){
-
  editandoProducto=p.id;
-
  $("nombre").value=p.nombre||"";
  $("descripcion").value=p.descripcion||"";
-
  let categoriaId=p.categoriaId||"";
-
- // Compatibilidad con productos antiguos que guardaban
- // el nombre de la categoría en vez de su identificador.
-
- if(!categoriaId && p.categoria){
-
-  const encontrada=categorias.find(c=>
-   c.nombre===p.categoria
-  );
-
-  if(encontrada){
-   categoriaId=encontrada.id;
-  }
-
+ if(!categoriaId&&p.categoria){
+  const encontrada=categorias.find(c=>c.nombre===p.categoria);
+  if(encontrada)categoriaId=encontrada.id;
  }
-
  $("categoriaProducto").value=categoriaId;
-
  imagenActual=p.imagen||"";
-
  if(imagenActual){
-
   $("preview").src=imagenActual;
   $("preview").classList.remove("hidden");
-
- }else{
-
-  $("preview").classList.add("hidden");
-
- }
-
+ }else{$("preview").classList.add("hidden");}
  $("activo").checked=p.activo!==false;
-
  $("guardarProducto").textContent="Actualizar producto";
  $("cancelarEdicion").classList.remove("hidden");
-
  $("mensajeProducto").textContent="Editando: "+(p.nombre||"producto");
-
- $("formularioProducto").scrollIntoView({
-  behavior:"smooth",
-  block:"start"
- });
-
+ $("formularioProducto").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-
-// OCULTAR O PUBLICAR PRODUCTO
-
+/* OCULTAR O PUBLICAR */
 async function cambiarEstado(p){
-
  try{
-
-  await updateDoc(
-   doc(db,"productos",p.id),
-   {activo:p.activo===false}
-  );
-
+  await updateDoc(doc(db,"productos",p.id),{activo:p.activo===false});
   await cargarProductos();
-
- }catch(e){
-
-  alert("No se pudo cambiar el estado: "+e.message);
-
- }
-
+ }catch(e){alert("No se pudo cambiar el estado: "+e.message);}
 }
 
-
-// ELIMINAR PRODUCTO
-
+/* ELIMINAR PRODUCTO */
 async function eliminarProducto(p){
-
- if(!confirm('¿Eliminar definitivamente "'+(p.nombre||"este producto")+'"?')){
-  return;
- }
-
+ if(!confirm('¿Eliminar definitivamente "'+(p.nombre||"este producto")+'"?'))return;
  try{
-
   await deleteDoc(doc(db,"productos",p.id));
   await cargarProductos();
-
- }catch(e){
-
-  alert("No se pudo eliminar: "+e.message);
-
- }
-
+ }catch(e){alert("No se pudo eliminar: "+e.message);}
 }
-
 </script>
 </body>
 </html>
