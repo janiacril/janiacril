@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -55,6 +55,10 @@ button.dark{background:#52645a}
 .top-actions button{width:auto}
 .checkline{display:flex;align-items:center;gap:9px;margin:14px 0}
 .checkline input{width:auto}
+.gallery-preview{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.photo-item{position:relative;width:85px;height:85px}
+.photo-item img{width:85px;height:85px;object-fit:cover;border-radius:9px;border:1px solid var(--line)}
+.photo-item button{position:absolute;top:-7px;right:-7px;width:25px;height:25px;padding:0;border-radius:50%;background:var(--red);font-size:15px}
 @media(max-width:600px){
  .stats{grid-template-columns:1fr 1fr}
  .toolbar{grid-template-columns:1fr}
@@ -112,17 +116,17 @@ button.dark{background:#52645a}
 
  <section class="panel" id="formularioProducto">
   <h2>2. Agregar un producto</h2>
-  <p class="help">Cada producto tiene su propia fotografía, independiente de la imagen de su categoría.</p>
+  <p class="help">Ahora puedes agregar varias fotografías para que tus clientes las recorran con flechas al abrir el producto.</p>
   <label for="nombre">Nombre del producto</label>
   <input id="nombre" placeholder="Ej: Exhibidor para macarrones">
   <label for="descripcion">Descripción</label>
   <textarea id="descripcion" placeholder="Describe brevemente el producto, sus características o usos."></textarea>
   <label for="categoriaProducto">Categoría</label>
   <select id="categoriaProducto"><option value="">Selecciona una categoría</option></select>
-  <label for="foto">Fotografía del producto</label>
-  <input id="foto" type="file" accept="image/png,image/jpeg,image/webp">
-  <p class="help">Formatos JPG, PNG o WEBP. Tamaño máximo: 5 MB.</p>
-  <img id="preview" class="preview hidden" alt="Vista previa de la imagen">
+  <label for="foto">Fotografías del producto</label>
+  <input id="foto" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+  <p class="help">Selecciona una o varias fotos. Puedes seleccionar varias manteniendo presionada la tecla Ctrl. JPG, PNG o WEBP, máximo 5 MB cada una.</p>
+  <div id="previewGaleria" class="gallery-preview"></div>
   <p id="estadoFoto" class="help"></p>
   <div class="checkline">
    <input id="activo" type="checkbox" checked>
@@ -167,7 +171,7 @@ const ADMIN_UID="4vCpe7JpzdM6GqP7V1hpcBK530d2";
 const CLOUD_NAME="llxnor52";
 const UPLOAD_PRESET="janiacril_productos";
 const $=id=>document.getElementById(id);
-let categorias=[],productos=[],imagenActual="",editandoProducto=null;
+let categorias=[],productos=[],imagenesActuales=[],editandoProducto=null;
 
 /* INICIAR SESIÓN */
 $("entrar").onclick=async()=>{
@@ -339,14 +343,60 @@ async function eliminarCategoria(c){
  }catch(e){alert("No se pudo eliminar: "+e.message);}
 }
 
-/* FOTO DE PRODUCTO */
+/* FOTOGRAFÍAS DE PRODUCTO */
+function dibujarVistaPreviaFotos(){
+ $("previewGaleria").innerHTML="";
+
+ imagenesActuales.forEach((url,index)=>{
+  const item=document.createElement("div");
+  item.className="photo-item";
+
+  const img=document.createElement("img");
+  img.src=url;
+  img.alt="Fotografía "+(index+1);
+
+  const eliminar=document.createElement("button");
+  eliminar.type="button";
+  eliminar.textContent="×";
+  eliminar.title="Quitar esta fotografía";
+  eliminar.onclick=()=>{
+   imagenesActuales.splice(index,1);
+   dibujarVistaPreviaFotos();
+   $("estadoFoto").textContent=imagenesActuales.length+" fotografía(s) guardada(s).";
+  };
+
+  item.append(img,eliminar);
+  $("previewGaleria").append(item);
+ });
+}
+
+/* SELECCIONAR VARIAS FOTOGRAFÍAS */
 $("foto").onchange=()=>{
- const archivo=$("foto").files[0];if(!archivo)return;
- try{validarImagen(archivo);}
- catch(e){alert(e.message);$("foto").value="";return;}
- $("preview").src=URL.createObjectURL(archivo);
- $("preview").classList.remove("hidden");
- $("estadoFoto").textContent="Fotografía seleccionada.";
+ const archivos=Array.from($("foto").files);
+ if(!archivos.length)return;
+
+ try{
+  archivos.forEach(validarImagen);
+ }catch(e){
+  alert(e.message);
+  $("foto").value="";
+  return;
+ }
+
+ archivos.forEach(archivo=>{
+  const url=URL.createObjectURL(archivo);
+  const item=document.createElement("div");
+  item.className="photo-item";
+
+  const img=document.createElement("img");
+  img.src=url;
+  img.alt=archivo.name;
+
+  item.append(img);
+  $("previewGaleria").append(item);
+ });
+
+ $("estadoFoto").textContent=archivos.length+" fotografía(s) nueva(s) seleccionada(s). Se agregarán a las fotografías guardadas.";
 };
 
 /* GUARDAR PRODUCTO */
@@ -355,46 +405,68 @@ $("guardarProducto").onclick=async()=>{
  const descripcion=$("descripcion").value.trim();
  const categoriaId=$("categoriaProducto").value;
  const categoria=categorias.find(c=>c.id===categoriaId);
- const archivo=$("foto").files[0];
+ const archivos=Array.from($("foto").files);
+
  if(!nombre)return alert("Escribe el nombre del producto.");
  if(!categoria)return alert("Selecciona una categoría.");
- if(!editandoProducto&&!archivo)return alert("Selecciona una fotografía del producto.");
+ if(!editandoProducto&&!archivos.length)return alert("Selecciona al menos una fotografía del producto.");
 
  $("guardarProducto").disabled=true;
  $("mensajeProducto").textContent="Guardando producto...";
+
  try{
-  if(archivo)imagenActual=await subirFoto(archivo);
+  let nuevasImagenes=[];
+
+  for(const archivo of archivos){
+   validarImagen(archivo);
+   nuevasImagenes.push(await subirFoto(archivo));
+  }
+
+  const imagenesFinales=[...imagenesActuales,...nuevasImagenes];
+
   const datos={
    nombre,descripcion,categoriaId,categoria:categoria.nombre,
-   subcategoriaId:"",subcategoria:"",imagen:imagenActual,
+   subcategoriaId:"",subcategoria:"",
+   imagen:imagenesFinales[0]||"",
+   imagenes:imagenesFinales,
    activo:$("activo").checked
   };
+
   if(editandoProducto){
    await updateDoc(doc(db,"productos",editandoProducto),datos);
   }else{
    datos.creado=serverTimestamp();
    await addDoc(collection(db,"productos"),datos);
   }
+
   $("mensajeProducto").textContent="¡Producto guardado correctamente!";
   limpiarProducto();
   await cargarProductos();
+
  }catch(e){
   $("mensajeProducto").textContent="No se pudo guardar: "+e.message;
- }finally{$("guardarProducto").disabled=false;}
+ }finally{
+  $("guardarProducto").disabled=false;
+ }
 };
 
 /* LIMPIAR FORMULARIO */
 function limpiarProducto(){
- $("nombre").value="";$("descripcion").value="";
- $("categoriaProducto").value="";$("foto").value="";
- $("preview").classList.add("hidden");$("preview").removeAttribute("src");
- $("estadoFoto").textContent="";$("activo").checked=true;
- imagenActual="";editandoProducto=null;
+ $("nombre").value="";
+ $("descripcion").value="";
+ $("categoriaProducto").value="";
+ $("foto").value="";
+ $("previewGaleria").innerHTML="";
+ $("estadoFoto").textContent="";
+ $("activo").checked=true;
+ imagenesActuales=[];
+ editandoProducto=null;
  $("guardarProducto").textContent="Guardar producto";
  $("cancelarEdicion").classList.add("hidden");
 }
 $("cancelarEdicion").onclick=()=>{
- limpiarProducto();$("mensajeProducto").textContent="Edición cancelada.";
+ limpiarProducto();
+ $("mensajeProducto").textContent="Edición cancelada.";
 };
 
 /* BUSCAR Y FILTRAR */
@@ -414,28 +486,67 @@ async function cargarProductos(){
 function mostrarProductos(){
  const termino=$("buscarProducto").value.trim().toLowerCase();
  const filtro=$("filtroCategoria").value;
+
  const lista=productos.filter(p=>{
   const coincideNombre=(p.nombre||"").toLowerCase().includes(termino);
   const coincideCategoria=!filtro||p.categoriaId===filtro||(!p.categoriaId&&categorias.some(c=>c.id===filtro&&c.nombre===p.categoria));
   return coincideNombre&&coincideCategoria;
  });
+
  $("listaProductos").innerHTML="";
- if(!lista.length){$("listaProductos").textContent="No se encontraron productos.";return;}
+ if(!lista.length){
+  $("listaProductos").textContent="No se encontraron productos.";
+  return;
+ }
 
  lista.forEach(p=>{
-  const card=document.createElement("div");card.className="product";
-  const img=document.createElement("img");img.src=p.imagen||"";img.alt=p.nombre||"Producto";
-  const info=document.createElement("div");info.className="product-info";
-  const name=document.createElement("strong");name.textContent=p.nombre||"Producto sin nombre";
-  const cat=document.createElement("p");cat.className="help";cat.textContent=p.categoria||"Sin categoría";
-  const status=document.createElement("span");status.className="badge"+(p.activo===false?" off":"");
+  const card=document.createElement("div");
+  card.className="product";
+
+  const img=document.createElement("img");
+  img.src=(Array.isArray(p.imagenes)&&p.imagenes[0])||p.imagen||"";
+  img.alt=p.nombre||"Producto";
+
+  const info=document.createElement("div");
+  info.className="product-info";
+
+  const name=document.createElement("strong");
+  name.textContent=p.nombre||"Producto sin nombre";
+
+  const cat=document.createElement("p");
+  cat.className="help";
+  cat.textContent=p.categoria||"Sin categoría";
+
+  const status=document.createElement("span");
+  status.className="badge"+(p.activo===false?" off":"");
   status.textContent=p.activo===false?"Oculto en la página":"Publicado";
 
-  const edit=document.createElement("button");edit.className="secondary";edit.textContent="Editar";edit.onclick=()=>editarProducto(p);
-  const toggle=document.createElement("button");toggle.className="dark";toggle.textContent=p.activo===false?"Volver a publicar":"Ocultar";toggle.onclick=()=>cambiarEstado(p);
-  const del=document.createElement("button");del.className="danger";del.textContent="Eliminar";del.onclick=()=>eliminarProducto(p);
-  const actions=document.createElement("div");actions.className="actions";actions.append(edit,toggle,del);
-  info.append(name,cat,status,actions);card.append(img,info);
+  const fotos=p.imagenes?.length|| (p.imagen?1:0);
+  const cantidadFotos=document.createElement("p");
+  cantidadFotos.className="help";
+  cantidadFotos.textContent=fotos+" fotografía(s)";
+
+  const edit=document.createElement("button");
+  edit.className="secondary";
+  edit.textContent="Editar";
+  edit.onclick=()=>editarProducto(p);
+
+  const toggle=document.createElement("button");
+  toggle.className="dark";
+  toggle.textContent=p.activo===false?"Volver a publicar":"Ocultar";
+  toggle.onclick=()=>cambiarEstado(p);
+
+  const del=document.createElement("button");
+  del.className="danger";
+  del.textContent="Eliminar";
+  del.onclick=()=>eliminarProducto(p);
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+  actions.append(edit,toggle,del);
+
+  info.append(name,cat,status,cantidadFotos,actions);
+  card.append(img,info);
   $("listaProductos").append(card);
  });
 }
@@ -445,17 +556,22 @@ function editarProducto(p){
  editandoProducto=p.id;
  $("nombre").value=p.nombre||"";
  $("descripcion").value=p.descripcion||"";
+
  let categoriaId=p.categoriaId||"";
  if(!categoriaId&&p.categoria){
   const encontrada=categorias.find(c=>c.nombre===p.categoria);
   if(encontrada)categoriaId=encontrada.id;
  }
  $("categoriaProducto").value=categoriaId;
- imagenActual=p.imagen||"";
- if(imagenActual){
-  $("preview").src=imagenActual;
-  $("preview").classList.remove("hidden");
- }else{$("preview").classList.add("hidden");}
+
+ imagenesActuales=Array.isArray(p.imagenes)&&p.imagenes.length
+  ?p.imagenes.filter(Boolean)
+  :(p.imagen?[p.imagen]:[]);
+
+ $("foto").value="";
+ dibujarVistaPreviaFotos();
+ $("estadoFoto").textContent=imagenesActuales.length+" fotografía(s) guardada(s).";
+
  $("activo").checked=p.activo!==false;
  $("guardarProducto").textContent="Actualizar producto";
  $("cancelarEdicion").classList.remove("hidden");
@@ -482,3 +598,4 @@ async function eliminarProducto(p){
 </script>
 </body>
 </html>
+```
