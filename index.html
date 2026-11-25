@@ -417,10 +417,10 @@ function abrirProducto(id){
 
   <p>${esc(productoSeleccionado.descripcion||"")}</p>
 
-  ${productoSeleccionado.masInformacion?`
+ <p>${esc(productoSeleccionado.masInformacion).replace(/\n/g,"<br>")}</p>
    <details class="product-more">
     <summary>Más información</summary>
- <p class="product-description">${esc(productoSeleccionado.descripcion||"").replace(/\n/g,"<br>")}</p>
+<p>${esc(productoSeleccionado.descripcion||"")}</p>
    </details>
   `:""}
  `;
