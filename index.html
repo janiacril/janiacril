@@ -204,7 +204,7 @@ section{padding:45px 5%}
 <button class="cartButton" id="abrirCarrito">Mi cotización (<span id="cartCount">0</span>)</button>
 <div class="overlay" id="productoOverlay">
   <div class="dialog">
-    <button class="close" id="cerrarProducto">×</button><div id="productoDetalle"></div>
+  <button type="button" class="close" id="cerrarProducto">×</button><div id="productoDetalle"></div>
     <form id="formPersonalizar">
       <label>Espesor del acrílico</label>
       <select id="espesor" required>
@@ -432,7 +432,12 @@ function abrirProducto(id){
  $("previewReferencias").innerHTML="";
  $("productoOverlay").style.display="block";
 }
+function cerrarProducto(){
+  $("productoOverlay").style.display="none";
+  productoSeleccionado=null;
+}
 
+$("cerrarProducto").addEventListener("click", cerrarProducto);
 /* IMÁGENES DE REFERENCIA */
 $("referencias").addEventListener("change",()=>{
  const files=Array.from($("referencias").files);
