@@ -754,6 +754,9 @@ function dibujarProductos(lista) {
 
 /* NAVEGACIÓN DEL CATÁLOGO */
 
+
+/* NAVEGACIÓN DEL CATÁLOGO SIN SUBCATEGORÍAS */
+
 function dibujarCatalogo() {
   const contenedor = $("catalogo");
 
@@ -765,7 +768,7 @@ function dibujarCatalogo() {
     return;
   }
 
-  /* CATEGORÍAS PRINCIPALES */
+  /* MOSTRAR CATEGORÍAS PRINCIPALES */
 
   if (!categoriaActual) {
     const principales = categorias.filter(c => !c.parentId);
@@ -794,7 +797,6 @@ function dibujarCatalogo() {
           c => c.id === b.dataset.id
         );
 
-        subcategoriaActual = null;
         dibujarCatalogo();
       });
     });
@@ -802,45 +804,27 @@ function dibujarCatalogo() {
     return;
   }
 
-  /* SUBCATEGORÍAS */
+  /* MOSTRAR DIRECTAMENTE LOS PRODUCTOS */
 
-  if (!subcategoriaActual) {
-    const subcategorias = categorias.filter(
-      c => c.parentId === categoriaActual.id
-    );
+  contenedor.innerHTML = `
+    <div class="catalog-top">
+      <button class="back-button" id="volverCategorias">
+        ← Volver a categorías
+      </button>
 
-    contenedor.innerHTML = `
-      <div class="catalog-top">
-        <button class="back-button" id="volverCategorias">
-          ← Volver
-        </button>
+      <h2>${esc(categoriaActual.nombre)}</h2>
+    </div>
+  `;
 
-        <h2>${esc(categoriaActual.nombre)}</h2>
-      </div>
-    `;
+  dibujarProductos(productosDeCategoria(categoriaActual));
 
-    if (subcategorias.length) {
-      contenedor.innerHTML += `
-        <p class="catalog-heading">
-          Selecciona una subcategoría
-        </p>
+  $("volverCategorias").addEventListener("click", () => {
+    categoriaActual = null;
+    subcategoriaActual = null;
+    dibujarCatalogo();
+  });
+}
 
-        <div class="grid">
-          ${subcategorias.map(sub =>
-            tarjetaCategoria(sub)
-          ).join("")}
-        </div>
-      `;
-
-      contenedor.querySelectorAll(".category-card").forEach(b => {
-        b.addEventListener("click", () => {
-          subcategoriaActual = categorias.find(
-            c => c.id === b.dataset.id
-          );
-
-          dibujarCatalogo();
-        });
-      });
 
     } else {
       dibujarProductos(productosDeCategoria(categoriaActual));
