@@ -17,55 +17,82 @@ html{scroll-behavior:smooth}
 body{margin:0;font-family:Arial,sans-serif;color:var(--dark)}
 
 header{
-  background:white;padding:14px 6%;
-  display:flex;justify-content:space-between;align-items:center;
-  position:sticky;top:0;z-index:5;
+  background:white;
+  padding:14px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:5;
   box-shadow:0 2px 12px #0001;
 }
-.logo img{width:100px;height:auto;display:block}
+.logo img{
+  width:85px;
+  height:65px;
+  object-fit:contain;
+  display:block;
+}
 nav a{
-  color:var(--dark);text-decoration:none;
-  margin-left:18px;font-weight:bold;font-size:14px;
+  color:var(--dark);
+  text-decoration:none;
+  margin-left:18px;
+  font-weight:bold;
+  font-size:14px;
 }
 nav a:hover{color:var(--green)}
 
 .hero{
   background:linear-gradient(120deg,#10291b,#238347);
-  color:white;padding:80px 8%;text-align:center;
+  color:white;
+  padding:80px 8%;
+  text-align:center;
 }
 .hero h1{font-size:clamp(38px,6vw,65px);margin:0 0 15px}
 .hero h2{font-size:30px}
 .hero p{font-size:19px;line-height:1.6}
 
 .btn{
-  display:inline-block;background:var(--green);color:white;
-  padding:12px 18px;border:0;border-radius:7px;
-  text-decoration:none;font-weight:bold;cursor:pointer;margin:5px;
+  display:inline-block;
+  background:var(--green);
+  color:white;
+  padding:12px 18px;
+  border:0;
+  border-radius:7px;
+  text-decoration:none;
+  font-weight:bold;
+  cursor:pointer;
+  margin:5px;
   transition:transform .2s ease,background .2s ease;
 }
-.btn:hover{transform:translateY(-2px);background:#106b30}
+.btn:hover{
+  transform:translateY(-2px);
+  background:#106b30;
+}
 .btn:disabled{opacity:.6;cursor:wait}
 .btn.white{background:white;color:var(--dark)}
 .btn.white:hover{background:#e8f2e9}
 
 section{padding:60px 7%}
 h2{text-align:center;font-size:30px}
-.subtitle{text-align:center;color:#68756b;margin-bottom:30px;line-height:1.5}
+.subtitle{
+  text-align:center;
+  color:#68756b;
+  margin-bottom:30px;
+  line-height:1.5;
+}
 
 /* CATÁLOGO */
 #catalogo{
   max-width:1050px;
   margin:0 auto;
 }
-
 .catalog-heading{
   text-align:center;
   margin:0 0 22px;
   font-size:18px;
   color:#425348;
 }
-
-/* CUADRÍCULA COMPACTA */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
@@ -87,7 +114,7 @@ h2{text-align:center;font-size:30px}
   box-shadow:0 9px 22px #00000015;
 }
 
-/* TARJETAS DE CATEGORÍAS */
+/* CATEGORÍAS Y SUBCATEGORÍAS */
 .category-card{
   cursor:pointer;
   text-align:center;
@@ -123,7 +150,7 @@ h2{text-align:center;font-size:30px}
 }
 .category-card:hover h3{background:#106b30}
 
-/* TARJETAS DE PRODUCTOS */
+/* PRODUCTOS */
 .product-card .visual{
   width:100%;
   aspect-ratio:1/1;
@@ -153,7 +180,6 @@ h2{text-align:center;font-size:30px}
   padding:10px 7px;
   font-size:12px;
 }
-
 .no-image{
   width:100%;
   height:100%;
@@ -223,54 +249,97 @@ footer{text-align:center;background:#0c1911;color:#ddd;padding:25px}
 .info-card h3{font-size:17px}
 .info-card p{font-size:14px;line-height:1.6;color:#68756b}
 
+/* CARRITO */
 .cartButton{
-  position:fixed;bottom:20px;right:20px;z-index:8;
-  background:var(--green);color:white;padding:14px 18px;
-  border-radius:30px;border:0;font-weight:bold;
-  cursor:pointer;box-shadow:0 4px 15px #0003;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:8;
+  background:var(--green);
+  color:white;
+  padding:14px 18px;
+  border-radius:30px;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 4px 15px #0003;
   transition:transform .2s ease;
 }
 .cartButton:hover{transform:scale(1.05)}
 
 .overlay{
-  display:none;position:fixed;inset:0;background:#0008;
-  z-index:20;padding:18px;overflow:auto;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:20;
+  padding:18px;
+  overflow:auto;
 }
 .dialog{
-  background:white;width:min(650px,100%);
-  margin:30px auto;padding:24px;
-  border-radius:14px;position:relative;
+  background:white;
+  width:min(650px,100%);
+  margin:30px auto;
+  padding:24px;
+  border-radius:14px;
+  position:relative;
 }
 .close{
-  position:absolute;right:15px;top:12px;
-  border:0;background:#edf2ed;border-radius:50%;
-  width:36px;height:36px;font-size:20px;cursor:pointer;
+  position:absolute;
+  right:15px;
+  top:12px;
+  border:0;
+  background:#edf2ed;
+  border-radius:50%;
+  width:36px;
+  height:36px;
+  font-size:20px;
+  cursor:pointer;
 }
 label{display:block;font-weight:bold;margin-top:13px}
 input,textarea,select{
-  width:100%;padding:12px;margin:7px 0;
-  border:1px solid #ccd5cc;border-radius:7px;font:inherit;
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border:1px solid #ccd5cc;
+  border-radius:7px;
+  font:inherit;
 }
 .fieldgrid{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
 }
-.cartItem{border-bottom:1px solid #e7ece7;padding:14px 0}
-.cartItem p{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.cartItem{
+  border-bottom:1px solid #e7ece7;
+  padding:14px 0;
+}
+.cartItem p{
+  font-size:14px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
 .cartActions{display:flex;gap:8px;flex-wrap:wrap}
 .cartActions button{
-  border:0;border-radius:6px;padding:9px 12px;cursor:pointer;
+  border:0;
+  border-radius:6px;
+  padding:9px 12px;
+  cursor:pointer;
 }
 .qty{background:#e9f2eb;color:#145d30}
 .remove{background:#faeaea;color:#a32222}
 .preview{display:flex;gap:8px;flex-wrap:wrap}
 .preview img{
-  width:75px;height:75px;object-fit:cover;border-radius:7px;
+  width:75px;
+  height:75px;
+  object-fit:cover;
+  border-radius:7px;
 }
 .hint{font-size:13px;color:#69766d}
 
 @media(max-width:650px){
   header{padding:13px 4%;flex-wrap:wrap}
-  .logo img{width:80px}
+  .logo img{width:75px;height:55px}
   nav{width:100%;margin-top:12px}
   nav a{margin:0 12px 0 0;font-size:12px}
   .hero{padding:60px 6%}
@@ -278,7 +347,6 @@ input,textarea,select{
   .fieldgrid{grid-template-columns:1fr}
   .dialog{margin:8px auto;padding:20px}
 
-  /* CUADRADOS PEQUEÑOS EN CELULAR */
   .grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:12px;
@@ -355,36 +423,45 @@ input,textarea,select{
   <div style="max-width:550px;margin:auto">
     <label>Tu nombre</label>
     <input id="nombreCliente" placeholder="Tu nombre">
+
     <label>Describe tu proyecto</label>
     <textarea id="detalleCliente" rows="4"
       placeholder="Medidas, cantidad, diseño y detalles"></textarea>
-    <button class="btn" id="cotizarProyecto">Solicitar cotización</button>
+
+    <button class="btn" id="cotizarProyecto">
+      Solicitar cotización
+    </button>
   </div>
 </section>
 
 <section style="background:#f1f7f1;text-align:center">
   <h2>Información para nuestros clientes</h2>
+
   <div class="info-grid">
     <div class="info-card">
       <h3>Trabajos a medida</h3>
       <p>Fabricamos productos personalizados según tus medidas y necesidades.</p>
     </div>
+
     <div class="info-card">
       <h3>Tiempo de fabricación</h3>
       <p>Todos nuestros pedidos tienen un plazo mínimo de fabricación de 5 días hábiles.</p>
     </div>
+
     <div class="info-card">
       <h3>Tiempo de envío</h3>
       <p>El tiempo de envío es adicional al plazo de fabricación y depende del destino y la empresa de transporte.</p>
     </div>
+
     <div class="info-card">
       <h3>Santiago y regiones</h3>
-      <p>Estamos ubicados en Santiago y realizamos envíos a regiones mediante Starken o Blue Express.</p>
+      <p>Estamos ubicados en Santiago y realizamos envíos a regiones mediante Starken o Chilexpress.</p>
     </div>
   </div>
 
   <h2 style="margin-top:35px">Síguenos en Instagram</h2>
-  <a class="btn" href="https://www.instagram.com/productos_en_acrilicos/"
+  <a class="btn"
+    href="https://www.instagram.com/productos_en_acrilicos/"
     target="_blank" rel="noopener">
     @productos_en_acrilicos
   </a>
@@ -393,16 +470,20 @@ input,textarea,select{
 <section class="contact" id="contacto">
   <h2>Estamos para ayudarte</h2>
   <p>¿Tienes preguntas o quieres hacer un pedido?</p>
+
   <a class="btn white" href="https://wa.me/56975370496">
     Contactar por WhatsApp
   </a>
- <p>WhatsApp: +56 9 7537 0496</p>
-<p>
-  Correo:
-  <a href="mailto:cdm03543@gmail.com" style="color:white;text-decoration:none">
-    cdm03543@gmail.com
-  </a>
-</p>
+
+  <p>WhatsApp: +56 9 7537 0496</p>
+
+  <p>
+    Correo:
+    <a href="mailto:cdm03543@gmail.com"
+      style="color:white;text-decoration:none">
+      cdm03543@gmail.com
+    </a>
+  </p>
 </section>
 
 </main>
@@ -411,6 +492,7 @@ input,textarea,select{
   Mi cotización (<span id="cartCount">0</span>)
 </button>
 
+<!-- VENTANA PARA PERSONALIZAR PRODUCTOS -->
 <div class="overlay" id="productoOverlay">
   <div class="dialog">
     <button class="close" id="cerrarProducto">×</button>
@@ -419,10 +501,14 @@ input,textarea,select{
     <form id="formPersonalizar">
       <label>Espesor del acrílico</label>
       <select id="espesor" required>
-        <option>2 mm</option><option>3 mm</option>
-        <option>4 mm</option><option>5 mm</option>
-        <option>6 mm</option><option>7 mm</option>
-        <option>8 mm</option><option>9 mm</option>
+        <option>2 mm</option>
+        <option>3 mm</option>
+        <option>4 mm</option>
+        <option>5 mm</option>
+        <option>6 mm</option>
+        <option>7 mm</option>
+        <option>8 mm</option>
+        <option>9 mm</option>
         <option>10 mm</option>
       </select>
 
@@ -437,7 +523,11 @@ input,textarea,select{
       <label>Imágenes de referencia (opcional)</label>
       <input id="referencias" type="file"
         accept="image/jpeg,image/png,image/webp" multiple>
-      <p class="hint">Hasta 4 imágenes JPG, PNG o WEBP, máximo 5 MB cada una.</p>
+
+      <p class="hint">
+        Hasta 4 imágenes JPG, PNG o WEBP, máximo 5 MB cada una.
+      </p>
+
       <div id="previewReferencias" class="preview"></div>
 
       <label>Describe cómo quieres tu producto</label>
@@ -451,18 +541,20 @@ input,textarea,select{
   </div>
 </div>
 
+<!-- VENTANA DEL CARRITO -->
 <div class="overlay" id="carritoOverlay">
   <div class="dialog">
     <button class="close" id="cerrarCarrito">×</button>
+
     <h2>Mi cotización</h2>
-    <p class="hint">Revisa tus productos personalizados antes de enviarlos.</p>
+    <p class="hint">
+      Revisa tus productos personalizados antes de enviarlos.
+    </p>
+
     <div id="listaCarrito"></div>
 
     <label>Tu nombre</label>
     <input id="nombreCarrito" placeholder="Nombre y apellido">
-
-    <label>Tu teléfono (opcional)</label>
-    <input id="telefonoCarrito" placeholder="+56 9...">
 
     <label>Comentario general (opcional)</label>
     <textarea id="notaCarrito" rows="3"
@@ -517,20 +609,35 @@ let productoSeleccionado = null;
 let carrito = [];
 
 try {
-  carrito = JSON.parse(localStorage.getItem("janiacril_cotizacion") || "[]");
+  carrito = JSON.parse(
+    localStorage.getItem("janiacril_cotizacion") || "[]"
+  );
+
   if (!Array.isArray(carrito)) carrito = [];
 } catch(e) {
   carrito = [];
 }
 
+/* SEGURIDAD PARA MOSTRAR TEXTO */
+
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   }[c]));
 }
 
+/* GUARDAR CARRITO */
+
 function guardar() {
-  localStorage.setItem("janiacril_cotizacion", JSON.stringify(carrito));
+  localStorage.setItem(
+    "janiacril_cotizacion",
+    JSON.stringify(carrito)
+  );
+
   dibujarCarrito();
 }
 
@@ -539,9 +646,14 @@ function guardar() {
 function productosDeCategoria(cat) {
   return productos.filter(p =>
     p.activo !== false &&
-    (p.categoriaId === cat.id || p.categoria === cat.nombre)
+    (
+      p.categoriaId === cat.id ||
+      p.categoria === cat.nombre
+    )
   );
 }
+
+/* PRODUCTOS DE CADA SUBCATEGORÍA */
 
 function productosDeSubcategoria(sub) {
   return productos.filter(p =>
@@ -550,21 +662,41 @@ function productosDeSubcategoria(sub) {
       p.subcategoriaId === sub.id ||
       (
         p.subcategoria === sub.nombre &&
-        (!categoriaActual || p.categoriaId === categoriaActual.id ||
-          p.categoria === categoriaActual.nombre)
+        (
+          !categoriaActual ||
+          p.categoriaId === categoriaActual.id ||
+          p.categoria === categoriaActual.nombre
+        )
       )
     )
   );
 }
 
-/* TARJETA CUADRADA DE CATEGORÍA */
+/* IMAGEN AUTOMÁTICA PARA CATEGORÍAS Y SUBCATEGORÍAS */
 
-function tarjetaCategoria(cat, imagen) {
+function obtenerImagenCategoria(cat) {
+  const lista = cat.parentId
+    ? productosDeSubcategoria(cat)
+    : productosDeCategoria(cat);
+
+  const productoConImagen = lista.find(p =>
+    p.imagen && p.imagen.trim() !== ""
+  );
+
+  return productoConImagen ? productoConImagen.imagen : "";
+}
+
+/* TARJETA DE CATEGORÍA O SUBCATEGORÍA */
+
+function tarjetaCategoria(cat) {
+  const imagen = obtenerImagenCategoria(cat);
+
   return `
     <article class="card category-card" data-id="${esc(cat.id)}">
       <div class="visual">
         ${imagen
-          ? `<img src="${esc(imagen)}" alt="${esc(cat.nombre)}" loading="lazy">`
+          ? `<img src="${esc(imagen)}"
+              alt="${esc(cat.nombre)}" loading="lazy">`
           : `<div class="no-image">JANIACRIL</div>`
         }
       </div>
@@ -593,14 +725,18 @@ function dibujarProductos(lista) {
         <article class="card product-card">
           <div class="visual">
             ${p.imagen
-              ? `<img src="${esc(p.imagen)}" alt="${esc(p.nombre)}" loading="lazy">`
+              ? `<img src="${esc(p.imagen)}"
+                  alt="${esc(p.nombre)}" loading="lazy">`
               : `<div class="no-image">JANIACRIL</div>`
             }
           </div>
+
           <div class="card-content">
             <h3>${esc(p.nombre)}</h3>
             <p>${esc(p.descripcion || "")}</p>
-            <button class="btn personalizar" data-id="${esc(p.id)}">
+
+            <button class="btn personalizar"
+              data-id="${esc(p.id)}">
               Personalizar y cotizar
             </button>
           </div>
@@ -610,7 +746,9 @@ function dibujarProductos(lista) {
   `;
 
   contenedor.querySelectorAll(".personalizar").forEach(b => {
-    b.addEventListener("click", () => abrirProducto(b.dataset.id));
+    b.addEventListener("click", () => {
+      abrirProducto(b.dataset.id);
+    });
   });
 }
 
@@ -641,23 +779,26 @@ function dibujarCatalogo() {
     }
 
     contenedor.innerHTML = `
-      <p class="catalog-heading">Explora nuestras categorías</p>
+      <p class="catalog-heading">
+        Explora nuestras categorías
+      </p>
+
       <div class="grid">
-        ${principales.map(cat => {
-          const lista = productosDeCategoria(cat);
-          const imagen = lista.find(p => p.imagen)?.imagen || "";
-          return tarjetaCategoria(cat, imagen);
-        }).join("")}
+        ${principales.map(cat => tarjetaCategoria(cat)).join("")}
       </div>
     `;
 
     contenedor.querySelectorAll(".category-card").forEach(b => {
       b.addEventListener("click", () => {
-        categoriaActual = categorias.find(c => c.id === b.dataset.id);
+        categoriaActual = categorias.find(
+          c => c.id === b.dataset.id
+        );
+
         subcategoriaActual = null;
         dibujarCatalogo();
       });
     });
+
     return;
   }
 
@@ -673,28 +814,34 @@ function dibujarCatalogo() {
         <button class="back-button" id="volverCategorias">
           ← Volver
         </button>
+
         <h2>${esc(categoriaActual.nombre)}</h2>
       </div>
     `;
 
     if (subcategorias.length) {
       contenedor.innerHTML += `
-        <p class="catalog-heading">Selecciona una subcategoría</p>
+        <p class="catalog-heading">
+          Selecciona una subcategoría
+        </p>
+
         <div class="grid">
-          ${subcategorias.map(sub => {
-            const lista = productosDeSubcategoria(sub);
-            const imagen = lista.find(p => p.imagen)?.imagen || "";
-            return tarjetaCategoria(sub, imagen);
-          }).join("")}
+          ${subcategorias.map(sub =>
+            tarjetaCategoria(sub)
+          ).join("")}
         </div>
       `;
 
       contenedor.querySelectorAll(".category-card").forEach(b => {
         b.addEventListener("click", () => {
-          subcategoriaActual = categorias.find(c => c.id === b.dataset.id);
+          subcategoriaActual = categorias.find(
+            c => c.id === b.dataset.id
+          );
+
           dibujarCatalogo();
         });
       });
+
     } else {
       dibujarProductos(productosDeCategoria(categoriaActual));
     }
@@ -703,6 +850,7 @@ function dibujarCatalogo() {
       categoriaActual = null;
       dibujarCatalogo();
     });
+
     return;
   }
 
@@ -713,11 +861,14 @@ function dibujarCatalogo() {
       <button class="back-button" id="volverSubcategorias">
         ← Volver
       </button>
+
       <h2>${esc(subcategoriaActual.nombre)}</h2>
     </div>
   `;
 
-  dibujarProductos(productosDeSubcategoria(subcategoriaActual));
+  dibujarProductos(
+    productosDeSubcategoria(subcategoriaActual)
+  );
 
   $("volverSubcategorias").addEventListener("click", () => {
     subcategoriaActual = null;
@@ -729,6 +880,7 @@ function dibujarCatalogo() {
 
 function abrirProducto(id) {
   productoSeleccionado = productos.find(p => p.id === id);
+
   if (!productoSeleccionado) return;
 
   $("productoDetalle").innerHTML = `
@@ -737,13 +889,16 @@ function abrirProducto(id) {
           style="width:100%;max-height:230px;object-fit:contain">`
       : ""
     }
+
     <h2>${esc(productoSeleccionado.nombre)}</h2>
+
     <p>${esc(productoSeleccionado.descripcion || "")}</p>
   `;
 
   $("formPersonalizar").reset();
   $("cantidad").value = 1;
   $("previewReferencias").innerHTML = "";
+
   $("productoOverlay").style.display = "block";
 }
 
@@ -755,7 +910,9 @@ function cerrarProducto() {
 $("cerrarProducto").addEventListener("click", cerrarProducto);
 
 $("productoOverlay").addEventListener("click", e => {
-  if (e.target === $("productoOverlay")) cerrarProducto();
+  if (e.target === $("productoOverlay")) {
+    cerrarProducto();
+  }
 });
 
 /* IMÁGENES DE REFERENCIA */
@@ -776,6 +933,7 @@ $("referencias").addEventListener("change", () => {
   }
 
   $("previewReferencias").innerHTML = "";
+
   files.forEach(f => {
     const img = document.createElement("img");
     img.src = URL.createObjectURL(f);
@@ -783,32 +941,45 @@ $("referencias").addEventListener("change", () => {
   });
 });
 
+/* SUBIR IMÁGENES A CLOUDINARY */
+
 async function subirReferencia(file) {
   const data = new FormData();
+
   data.append("file", file);
   data.append("upload_preset", UPLOAD_PRESET);
   data.append("folder", "janiacril/referencias-clientes");
 
   const response = await fetch(
-    "https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload",
-    {method:"POST", body:data}
+    "https://api.cloudinary.com/v1_1/" +
+    CLOUD_NAME +
+    "/image/upload",
+    {
+      method:"POST",
+      body:data
+    }
   );
 
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result.error?.message || "No se pudo subir la imagen.");
+    throw new Error(
+      result.error?.message || "No se pudo subir la imagen."
+    );
   }
+
   return result.secure_url;
 }
 
-/* AGREGAR AL CARRITO */
+/* AGREGAR PRODUCTO A LA COTIZACIÓN */
 
 $("formPersonalizar").addEventListener("submit", async e => {
   e.preventDefault();
+
   if (!productoSeleccionado) return;
 
   const btn = $("agregarCotizacion");
+
   btn.disabled = true;
   btn.textContent = "Preparando imágenes...";
 
@@ -827,28 +998,38 @@ $("formPersonalizar").addEventListener("submit", async e => {
       ancho:$("medidaAncho").value.trim(),
       alto:$("medidaAlto").value.trim(),
       largo:$("medidaLargo").value.trim(),
-      cantidad:Math.max(1,Number($("cantidad").value) || 1),
+      cantidad:Math.max(
+        1,
+        Number($("cantidad").value) || 1
+      ),
       descripcion:$("descripcionPedido").value.trim(),
       referencias:refs
     });
 
     guardar();
     cerrarProducto();
+
     $("carritoOverlay").style.display = "block";
 
   } catch(error) {
-    alert("No se pudieron adjuntar las imágenes: " + error.message);
+    alert(
+      "No se pudieron adjuntar las imágenes: " +
+      error.message
+    );
+
   } finally {
     btn.disabled = false;
     btn.textContent = "Agregar a mi cotización";
   }
 });
 
-/* CARRITO */
+/* MOSTRAR CARRITO */
 
 function dibujarCarrito() {
-  $("cartCount").textContent =
-    carrito.reduce((s,p) => s + (Number(p.cantidad) || 1), 0);
+  $("cartCount").textContent = carrito.reduce(
+    (s,p) => s + (Number(p.cantidad) || 1),
+    0
+  );
 
   if (!carrito.length) {
     $("listaCarrito").innerHTML =
@@ -859,25 +1040,51 @@ function dibujarCarrito() {
   $("listaCarrito").innerHTML = carrito.map((p,i) => `
     <div class="cartItem">
       <h3>${i+1}. ${esc(p.nombre)}</h3>
-      <p><strong>Espesor:</strong> ${esc(p.espesor)}</p>
-      <p><strong>Medidas:</strong>
+
+      <p>
+        <strong>Espesor:</strong>
+        ${esc(p.espesor)}
+      </p>
+
+      <p>
+        <strong>Medidas:</strong>
         Ancho ${esc(p.ancho || "No indicado")} cm ·
         Alto ${esc(p.alto || "No indicado")} cm ·
         Largo ${esc(p.largo || "No indicado")} cm
       </p>
-      <p><strong>Cantidad:</strong> ${Number(p.cantidad) || 1}</p>
-      <p><strong>Descripción:</strong>
+
+      <p>
+        <strong>Cantidad:</strong>
+        ${Number(p.cantidad) || 1}
+      </p>
+
+      <p>
+        <strong>Descripción:</strong>
         ${esc(p.descripcion || "Sin descripción adicional")}
       </p>
-      <p><strong>Referencias:</strong>
+
+      <p>
+        <strong>Referencias:</strong>
         ${(p.referencias || []).map((url,j) =>
-          `<a href="${esc(url)}" target="_blank" rel="noopener">Ver imagen ${j+1}</a>`
+          `<a href="${esc(url)}"
+             target="_blank"
+             rel="noopener">Ver imagen ${j+1}</a>`
         ).join(" · ") || "Sin imágenes"}
       </p>
+
       <div class="cartActions">
-        <button class="qty" data-quantity="${i}" data-change="-1">−</button>
-        <button class="qty" data-quantity="${i}" data-change="1">+</button>
-        <button class="remove" data-remove="${i}">Eliminar pedido</button>
+        <button class="qty"
+          data-quantity="${i}"
+          data-change="-1">−</button>
+
+        <button class="qty"
+          data-quantity="${i}"
+          data-change="1">+</button>
+
+        <button class="remove"
+          data-remove="${i}">
+          Eliminar pedido
+        </button>
       </div>
     </div>
   `).join("");
@@ -885,10 +1092,13 @@ function dibujarCarrito() {
   $("listaCarrito").querySelectorAll("[data-quantity]").forEach(b => {
     b.addEventListener("click", () => {
       const i = Number(b.dataset.quantity);
+
       carrito[i].cantidad = Math.max(
         1,
-        (Number(carrito[i].cantidad) || 1) + Number(b.dataset.change)
+        (Number(carrito[i].cantidad) || 1) +
+        Number(b.dataset.change)
       );
+
       guardar();
     });
   });
@@ -900,6 +1110,8 @@ function dibujarCarrito() {
     });
   });
 }
+
+/* ABRIR Y CERRAR CARRITO */
 
 $("abrirCarrito").addEventListener("click", () => {
   $("carritoOverlay").style.display = "block";
@@ -919,47 +1131,76 @@ $("carritoOverlay").addEventListener("click", e => {
 /* ENVIAR COTIZACIÓN POR WHATSAPP */
 
 $("enviarWhatsApp").addEventListener("click", () => {
+
   if (!carrito.length) {
     alert("Agrega al menos un producto antes de enviar.");
     return;
   }
 
-  let msg = "Hola JANIACRIL, quiero solicitar una cotización personalizada.\n";
+  const nombre = $("nombreCarrito").value.trim();
+  const comentario = $("notaCarrito").value.trim();
 
-  if ($("nombreCarrito").value.trim()) {
-    msg += "\nNombre: " + $("nombreCarrito").value.trim();
-  }
-  if ($("telefonoCarrito").value.trim()) {
-    msg += "\nTeléfono: " + $("telefonoCarrito").value.trim();
-  }
+  let msg = "";
 
-  carrito.forEach((p,i) => {
-    msg += "\n\nPEDIDO " + (i+1) + ": " + p.nombre;
-    msg += "\nEspesor: " + p.espesor;
-    msg += "\nMedidas (cm): ancho " + (p.ancho || "no indicado") +
-      ", alto " + (p.alto || "no indicado") +
-      ", largo/profundidad " + (p.largo || "no indicado");
-    msg += "\nCantidad: " + p.cantidad;
-    msg += "\nDescripción: " + (p.descripcion || "Sin descripción");
+  msg += "━━━━━━━━━━━━━━━━━━━━\n";
+  msg += "       JANIACRIL\n";
+  msg += "   SOLICITUD DE COTIZACIÓN\n";
+  msg += "━━━━━━━━━━━━━━━━━━━━\n\n";
 
-    if (p.referencias?.length) {
-      msg += "\nImágenes de referencia:\n" + p.referencias.join("\n");
+  msg += "DATOS DEL CLIENTE\n";
+  msg += "Nombre: " + (nombre || "No indicado") + "\n\n";
+
+  msg += "DETALLE DE LOS PRODUCTOS\n";
+  msg += "────────────────────\n";
+
+  carrito.forEach((p, i) => {
+
+    msg += "\nPRODUCTO " + (i + 1) + "\n";
+    msg += "Nombre: " + p.nombre + "\n";
+    msg += "Cantidad: " + p.cantidad + " unidad(es)\n";
+    msg += "Espesor: " + (p.espesor || "No indicado") + "\n";
+
+    msg += "\nMEDIDAS\n";
+    msg += "• Ancho: " + (p.ancho || "No indicado") + " cm\n";
+    msg += "• Alto: " + (p.alto || "No indicado") + " cm\n";
+    msg += "• Largo / profundidad: " +
+      (p.largo || "No indicado") + " cm\n";
+
+    msg += "\nDESCRIPCIÓN Y PERSONALIZACIÓN\n";
+    msg += (p.descripcion || "Sin detalles adicionales") + "\n";
+
+    if (p.referencias && p.referencias.length) {
+      msg += "\nIMÁGENES DE REFERENCIA\n";
+
+      p.referencias.forEach((url, j) => {
+        msg += "Imagen " + (j + 1) + ": " + url + "\n";
+      });
+
+    } else {
+      msg += "\nImágenes de referencia: No adjuntas\n";
     }
+
+    msg += "\n────────────────────\n";
   });
 
-  if ($("notaCarrito").value.trim()) {
-    msg += "\n\nComentario general: " + $("notaCarrito").value.trim();
+  if (comentario) {
+    msg += "\nCOMENTARIO ADICIONAL\n";
+    msg += comentario + "\n";
   }
 
-  msg += "\n\nQuedo atento/a a la cotización. ¡Gracias!";
+  msg += "\n━━━━━━━━━━━━━━━━━━━━\n";
+  msg += "Solicitud enviada desde la página web de JANIACRIL.\n";
+  msg += "Quedo atento/a a su respuesta. ¡Muchas gracias!";
 
   window.open(
-    "https://wa.me/56975370496?text=" + encodeURIComponent(msg),
+    "https://wa.me/56975370496?text=" +
+    encodeURIComponent(msg),
     "_blank"
   );
+
 });
 
-/* PROYECTOS ESPECIALES */
+/* COTIZAR PROYECTOS ESPECIALES */
 
 $("cotizarProyecto").addEventListener("click", () => {
   const n = $("nombreCliente").value.trim();
@@ -970,11 +1211,15 @@ $("cotizarProyecto").addEventListener("click", () => {
     return;
   }
 
+  const mensaje =
+    "Hola JANIACRIL, soy " + n +
+    ". Quisiera cotizar este proyecto:\n\n" +
+    d +
+    "\n\nQuedo atento/a a su respuesta. ¡Muchas gracias!";
+
   window.open(
-    "https://wa.me/56975370496?text=" + encodeURIComponent(
-      "Hola JANIACRIL, soy " + n +
-      ". Quisiera cotizar este proyecto:\n" + d
-    ),
+    "https://wa.me/56975370496?text=" +
+    encodeURIComponent(mensaje),
     "_blank"
   );
 });
@@ -984,21 +1229,38 @@ $("cotizarProyecto").addEventListener("click", () => {
 dibujarCarrito();
 
 onSnapshot(collection(db,"productos"), snap => {
-  productos = snap.docs.map(d => ({id:d.id,...d.data()}));
+  productos = snap.docs.map(d => ({
+    id:d.id,
+    ...d.data()
+  }));
+
   dibujarCatalogo();
+
 }, error => {
   console.error("Error al cargar productos:",error);
-  $("catalogo").innerHTML =
-    '<p class="empty-message">No pudimos cargar los productos. Escríbenos por WhatsApp para cotizar.</p>';
+
+  $("catalogo").innerHTML = `
+    <p class="empty-message">
+      No pudimos cargar los productos.
+      Escríbenos por WhatsApp para cotizar.
+    </p>`;
 });
 
 onSnapshot(collection(db,"categorias"), snap => {
-  categorias = snap.docs.map(d => ({id:d.id,...d.data()}));
+  categorias = snap.docs.map(d => ({
+    id:d.id,
+    ...d.data()
+  }));
+
   dibujarCatalogo();
+
 }, error => {
   console.error("Error al cargar categorías:",error);
-  $("catalogo").innerHTML =
-    '<p class="empty-message">No pudimos cargar las categorías.</p>';
+
+  $("catalogo").innerHTML = `
+    <p class="empty-message">
+      No pudimos cargar las categorías.
+    </p>`;
 });
 
 </script>
